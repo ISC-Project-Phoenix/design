@@ -15,5 +15,20 @@ is non-deterministic, and thus requires additional deterministic safety systems 
 - **Motor Start/Stop messages** - Sent over CAN.
 
 ## Algorithm:
-[![](https://mermaid.ink/img/pako:eNpdUkFugzAQ_MrK5_ABDq0INOqlvYSqB4iULV7AlbGRbVJFiL_XBtKk7AHB7IxnFu_IKs2Jxawx2LeQZ6UCX0khlHAniKIeDUpJMoqe4AeFKz79A2ptIE3ewSBHAx1Ziw2dFm1gQaDvxzxPYVCcDCiwVGnF7TMkFzKeDboGidZBN62eG7cLyf9mHtCVcNeNXyjfglVjqCo-eo6O7oILGoFfcqPwzJuoVEtn7wG4kp3xtDiS4nDmwgYxdNppc17PSGdKNr6ihTBmS5Kvs7rWkG21_w7Jv_8mn-7u2aPPS5Eb0TReSdbp_rShKT2zDmuaOQWQCpHOD9xQB7hd04I_DLWeEnpsxzoyHQru730MnJK5ljoqWexfOdU4SFeyUk2eioPTx6uqWOzMQDs2zP82E-g3pmNxjdJ6lLjwsd6WXZpXavoFMXO77g)](https://mermaid.live/edit#pako:eNpdUkFugzAQ_MrK5_ABDq0INOqlvYSqB4iULV7AlbGRbVJFiL_XBtKk7AHB7IxnFu_IKs2Jxawx2LeQZ6UCX0khlHAniKIeDUpJMoqe4AeFKz79A2ptIE3ewSBHAx1Ziw2dFm1gQaDvxzxPYVCcDCiwVGnF7TMkFzKeDboGidZBN62eG7cLyf9mHtCVcNeNXyjfglVjqCo-eo6O7oILGoFfcqPwzJuoVEtn7wG4kp3xtDiS4nDmwgYxdNppc17PSGdKNr6ihTBmS5Kvs7rWkG21_w7Jv_8mn-7u2aPPS5Eb0TReSdbp_rShKT2zDmuaOQWQCpHOD9xQB7hd04I_DLWeEnpsxzoyHQru730MnJK5ljoqWexfOdU4SFeyUk2eioPTx6uqWOzMQDs2zP82E-g3pmNxjdJ6lLjwsd6WXZpXavoFMXO77g)
 
+```mermaid
+graph TD
+    A[init] --parallel--> wait[Wait for CAN radar message]
+    wait --> B{TTC under n seconds? Average of last m}
+    A --parallel--> vel[Wait for CAN velocity message]
+        vel --> velrec[Update velocity variable]
+        velrec --> vel
+
+    B -- yes --> C[Send `disable motor`]
+    C --> D{Has TTC held under threshold for j seconds?}
+        D -- yes --> E[Trigger estop]
+        D -- no --> F[Send `motor enable`]
+            F --> wait
+    
+    B -- no --> wait
+```
