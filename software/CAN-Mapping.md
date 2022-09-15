@@ -20,5 +20,5 @@ TODO: First define all messages, then go through and assign IDs. After that, def
   - encoding - fixed point percent, encoded as LE u8.
 
 ## Sensor Data
-- **Encoder count** - A updated encoder count. TODO semantics
+- **Encoder count** - Current encoder count, as well as current velocity. TODO semantics
 - **Radar data** - To spec of radar.
