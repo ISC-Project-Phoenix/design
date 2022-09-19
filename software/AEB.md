@@ -7,7 +7,7 @@ before a potential collision, to mitigate the damage to both objects. This is ne
 is non-deterministic, and thus requires additional deterministic safety systems to ensure functional safety.    
 
 ## Inputs
-- **Two Radars** - to reduce noise.
+- **Range sensors** - any sensor that outputs `Range Data` frames.
 - **Encoder data** - used to determine kart velocity.
 
 ## Outputs 
@@ -18,8 +18,8 @@ is non-deterministic, and thus requires additional deterministic safety systems 
 
 ```mermaid
 graph TD
-    A[init] --parallel--> wait[Wait for CAN radar message]
-    wait --> B{TTC under n seconds? Average of last m}
+    A[init] --parallel--> wait[Wait for CAN range message]
+    wait --> B{TTC under n seconds?}
     A --parallel--> vel[Wait for CAN velocity message]
         vel --> velrec[Update velocity variable]
         velrec --> vel
