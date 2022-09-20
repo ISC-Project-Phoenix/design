@@ -8,17 +8,16 @@ TODO: First define all messages, then go through and assign IDs. After that, def
 
 - **Set Speed** - Sets the motor speed to the contained speed percent.
   - encoding - fixed point percent, encoded as LE u8.
-- **Disable Motor** - Turns the motor off, and prevents all commands until re-enabled.
-- **Enable Motor** - Allows for the motor to react to `set speed` commands, if disabled.
 
 ## Steering control
-- **Set Angle** - Sets the virtual ackermann wheel to the contained angle.
-  - encoding - Angle is in radians, negative is right, positive is left. Encode as IEEE single.
+- **Set Angle** - Sets the physical servo to the passed angle. (see servo docs)
 
 ## Brake Control
-- **Set Brake** - Sets the Brake pressure to the contained percent.
-  - encoding - fixed point percent, encoded as LE u8.
+- **Set Brake** - Sets the Brake pressure. (see actuator docs)
+- **Lock Brake** - Prevents further braking messages from being sent from the interface to the bus.
+- **Unlock Brake** - Lets more braking messages be sent to the bus, if locked.
 
 ## Sensor Data
 - **Encoder Count** - Current encoder count, as well as current velocity. TODO semantics
-- **Range Data** - Generic range data from the front sensor. Should be generic across sonics, radar, ToF ect.
+- **Range Data** - Generic range data from the front sensor. Should be generic across sonics, radar, ToF ect. 
+  - encoding: IEEE float 32, in meters.

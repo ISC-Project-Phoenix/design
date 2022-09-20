@@ -1,4 +1,4 @@
-# Automatic Emergency Braking
+# Automatic Emergency Braking ECU
 
 ## Overview
 The Automatic Emergency Braking (AEB) system is designed to be a supplemental safety system
@@ -7,12 +7,12 @@ before a potential collision, to mitigate the damage to both objects. This is ne
 is non-deterministic, and thus requires additional deterministic safety systems to ensure functional safety.    
 
 ## Inputs
-- **Range sensors** - any sensor that outputs `Range Data` frames.
-- **Encoder data** - used to determine kart velocity.
+- **Perception CAN**
+  - **Range sensors** - any sensor that outputs `Range Data` frames.
+  - **Encoder data** - any sensor that outputs `Encoder Count` frames.
 
 ## Outputs 
 - **EStop** - direct connection to Estop circuit to allow for emergency braking.
-- **Motor Start/Stop messages** - Sent over CAN.
 
 ## Algorithm:
 
@@ -24,11 +24,6 @@ graph TD
         vel --> velrec[Update velocity variable]
         velrec --> vel
 
-    B -- yes --> C[Send `disable motor`]
-    C --> D{Has TTC held under threshold for j seconds?}
-        D -- yes --> E[Trigger estop]
-        D -- no --> F[Send `motor enable`]
-            F --> wait
-    
+    B -- yes --> E[Trigger estop]
     B -- no --> wait
 ```
