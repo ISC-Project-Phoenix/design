@@ -10,10 +10,15 @@ TODO: First define all messages, then go through and assign IDs. After that, def
   - encoding - fixed point percent, encoded as LE u8.
 
 ## Steering control
-- **Set Angle** - Sets the physical servo to the passed angle. (see servo docs)
+- **Set Angle** - Sets the steering motor to a certain angle, and holds it.
+  - encoding: [see doc](images/Steering%20motor%201.png). We will use command mode position to use the motor as a big servo.
+Angles are sent in variable 1, in "Position in revolutions", whatever that unit is.
 
 ## Brake Control
-- **Set Brake** - Sets the Brake pressure. (see actuator docs)
+- **Set Brake** - Sets the linear actuator for the break to a certain distance. Note that this command both
+controls the clutch and motor of the actuator, so it must be used properly to first engage the clutch,
+then the motor, then disable both.
+  - encoding: [see doc](images/Linear Actuator CAN Reference 2.png)
 - **Lock Brake** - Prevents further braking messages from being sent from the interface to the bus.
 - **Unlock Brake** - Lets more braking messages be sent to the bus, if locked.
 

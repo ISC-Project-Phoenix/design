@@ -30,4 +30,5 @@ These are all in the same format as described in the can messages.
 
 Simply convert the PC messages to the appropriate CAN messages.
 If a `Lock Brake` message is received, no more brake messages should be transmitted.
-Once a `Unlock Brake` message is received, break messages can flow again.
+Once a `Unlock Brake` message is received, break messages can flow again. This ECU and the 
+[pause ECU](Wifi-Pause.md) share a duty of keeping the [brake by wire](1A0014B-Linear-Actuator.md) alive.

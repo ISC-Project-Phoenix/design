@@ -1,9 +1,20 @@
-# 1A0014B 3" Linear CAN Actuator CAN Specification
+# Brake Control
 
 ## Overview
+
+Our brake by wire system is controlled by a linear actuator which physically compresses the 
+break pedal.
+
 The 1A0014B 3" Linear CAN Actuator uses J1939 CAN 2.0b frames at a baud rate of 250k in order to extend to a certain position in
 inches where zero is fully retracted and 3" is fully extended. Below is the CAN message specification and
 message examples as well as important usage information to prevent undo wear and tear on the actuator.
+
+
+For our use, it seems the clutch does not matter, as disengaging the clutch will make the actuator go limp.
+This means that we just need to engage the clutch at boot.
+
+The 100ms keepalive requirement should be implemented in the interface ecu, although this will need to transfer 
+over to the pause ecu if a pause signal is received.
 
 ## Important Usage Information:
 The linear actuator will power off both the clutch and motor and go into safe mode if 
