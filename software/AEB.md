@@ -27,3 +27,11 @@ graph TD
     B -- yes --> E[Trigger estop]
     B -- no --> wait
 ```
+
+## Functional Requirements
+- REQ1: The ECU will take into account the latest velocity or range estimates available on CAN.
+- REQ2: If the time to collision falls under n seconds, then the Estop will be triggered.
+- REQ3: The system should continue to function if one of the data sources stop sending data. This may include
+a false positive or negative stop.
+- REQ4: If the system is activated, an external indicator should be activated to clarify that it was AEB that stopped the 
+kart.
