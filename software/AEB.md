@@ -31,7 +31,7 @@ and find our time to collision (TTC) by finding our velocity at that point along
 - For each `t`; `0 < t <= some max timestep`
   - `kart_x, kart_y = f(t)`
   - Mark that cell containing `kart_x, kart_y` as occupied by kart, call that cell `C`
-  - Mark `c` cells to the left and right of `C` as occupied by the kart, where `c = kart_width/(m*2)`
+  - Mark `c` cells to the left and right of `C` as occupied by the kart, where `c = ceil(kart_width/(m*2))`
   - If any of those `c` cells attempt to write to a cell that is already occupied by an obstacle (ignoring cells occupied by the kart):
     - Calculate our time to collision as: `TTC = t` (alternatively, TODO)`TTC = dist(kart_x, kart_y)/kart_vel`, where dist is some distance function from the origin to kart_x, kart_y
     - If `TTC` > `Tolerance`:
@@ -45,3 +45,7 @@ and find our time to collision (TTC) by finding our velocity at that point along
 a false positive or negative stop.
 - REQ4: If the system is activated, an external indicator should be activated to clarify that it was AEB that stopped the 
 kart.
+- REQ5: The most accurate representation of current steering angle should be read from CAN and stored.
+
+## Non Functional Requirements
+- REQ1: The algorithm has a soft time constraint of 50ms (20hz LiDAR updates)
