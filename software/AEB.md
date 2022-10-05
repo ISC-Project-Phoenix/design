@@ -23,10 +23,12 @@ If the kart's path attempts to set a voxel high that was already set high by the
 Because this grid should be about ourselves, we can take the euclidean distance from that collision to the kart,
 and find our time to collision (TTC) by finding our velocity at that point along the curve. If that TTC is too low, then estop.
 
+- Given a LiDAR scan within the range (-25, 25) degrees
 - Create an `nxn` grid, where n is the number of voxels, and voxels are some real size measurement `m`.
 - For each LiDAR point in the scan `p`
+  - If `p` is < 150mm away from the LiDAR, skip `p`
   - Get the x,y coordinates of the point relative to the kart by converting from polar to euclidean
-  - If that x,y point is in an unoccupied cell, then mark it as occupied by obstacle (TODO is this trival?)
+  - If that x,y point is in an unoccupied cell, then mark it as occupied by obstacle
 - Use the configured wheelbase, steering angle, ect. to create a function for the arc created by the current motion of the kart, herby referred to as `f(t)`
 - For each `t`; `0 < t <= some max timestep`
   - `kart_x, kart_y = f(t)`
