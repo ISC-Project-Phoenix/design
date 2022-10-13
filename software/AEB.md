@@ -7,9 +7,11 @@ before a potential collision, to mitigate the damage to both objects. This is ne
 is non-deterministic, and thus requires additional deterministic safety systems to ensure functional safety.    
 
 ## Inputs
+- **UART to LD06 LiDAR** - Tiny 2d LiDAR for perception.
+
 - **Perception CAN**
-  - **UART to LD06 LiDAR** - Tiny 2d LiDAR for perception.
   - **Encoder data** - any sensor that outputs `Encoder Count` frames.
+  - **Steering data** - any sensor that outputs `Set Angle` frames.
 
 ## Outputs 
 - **EStop** - direct connection to Estop circuit to allow for emergency braking.
@@ -23,21 +25,25 @@ If the kart's path attempts to set a voxel high that was already set high by the
 Because this grid should be about ourselves, we can take the euclidean distance from that collision to the kart,
 and find our time to collision (TTC) by finding our velocity at that point along the curve. If that TTC is too low, then estop.
 
+**General Algo:**
 - Given a LiDAR scan within the range (-25, 25) degrees
-- Create an `nxn` grid, where n is the number of voxels, and voxels are some real size measurement `m`.
+- Create an `nxn` grid, where n is the number of voxels and must be odd, and voxels are some real size measurement `m`, defined by `10/n`.
+- Define a collision box about the kart `CB`, defined as a linear transform from the center of the rear axel to the top left and bottom right of area of the vehicle that can collide with things
 - For each LiDAR point in the scan `p`
   - If `p` is < 150mm away from the LiDAR, skip `p`
   - Get the x,y coordinates of the point relative to the kart by converting from polar to euclidean
+  - Apply the linear transform between kart point space and grid space
   - If that x,y point is in an unoccupied cell, then mark it as occupied by obstacle
-- Use the configured wheelbase, steering angle, ect. to create a function for the arc created by the current motion of the kart, herby referred to as `f(t)`
-- For each `t`; `0 < t <= some max timestep`
-  - `kart_x, kart_y = f(t)`
-  - Mark that cell containing `kart_x, kart_y` as occupied by kart, call that cell `C`
-  - Mark `c` cells to the left and right of `C` as occupied by the kart, where `c = ceil(kart_width/(m*2))`
-  - If any of those `c` cells attempt to write to a cell that is already occupied by an obstacle (ignoring cells occupied by the kart):
-    - Calculate our time to collision as: `TTC = t` (alternatively, TODO)`TTC = dist(kart_x, kart_y)/kart_vel`, where dist is some distance function from the origin to kart_x, kart_y
-    - If `TTC` > `Tolerance`:
-      - Fire estop, and exit
+- Create a function for the arc created by the current motion of the kart, f(t, velocity, wheelbase, ackermann_steering_angle) where velocity, wheelbase, and ackermann_steering_angle
+are constants for this iteration of the algorithm, herby referred to as `f(t)`. The values from `f(t)` should be the location of the center of the rear axel of the kart at some time, as well as its heading. (TODO)
+- For each `t`; `0 < t <= TTC`; with some step size dependent on `m` (TODO)
+  - `kart_x, kart_y, yaw = f(t)`
+  - Using `CB`, find the defining points of the box in kart space (make sure to rotate by `yaw`)
+  - Apply the linear transform from kart space to grid space
+  - Find the cells on the grid that fall under `CB`, and call them `c`. (TODO: rasterisation algo?)
+  - For each `c`:
+    - if `c` is occupied:
+      - Fire estop, then halt
 - Clear grid, as it will be recalculated with the next lidar scan
 
 ## Functional Requirements
@@ -50,4 +56,4 @@ kart.
 - REQ5: The most accurate representation of current steering angle should be read from CAN and stored.
 
 ## Non Functional Requirements
-- REQ1: The algorithm has a soft time constraint of 50ms (20hz LiDAR updates)
+- REQ1: The algorithm has a soft time constraint of 100ms (10hz LiDAR updates)
