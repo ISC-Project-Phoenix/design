@@ -16,7 +16,7 @@ is non-deterministic, and thus requires additional deterministic safety systems 
 ## Outputs 
 - **EStop** - direct connection to Estop circuit to allow for emergency braking.
 
-## Algorithm:
+## Algorithm
 The general idea will be to take all Lidar points, constrain them to an angle range, then map those 
 points onto a bounded occupancy grid, where each cell is either occupied by an obstacle, or free space.
 we will then use the ackermann equations to determine the current path
@@ -28,6 +28,7 @@ and find our time to collision (TTC) by finding our velocity at that point along
 **General Algo:**
 - Given a LiDAR scan within the range (-25, 25) degrees
 - Create an `nxn` grid, where n is the number of cells and must be odd, and cells are some real size measurement `m`, defined by `10/n`.
+  - This grid will always be 10mx10m in real measurements.
 - Define a collision box about the kart `CB`, defined as a linear transform from the center of the rear axel to the top left and bottom right of area of the vehicle that can collide with things
 - For each LiDAR point in the scan `p`
   - If `p` is < 150mm away from the LiDAR, skip `p`
@@ -46,8 +47,43 @@ are constants for this iteration of the algorithm, herby referred to as `f(t)`. 
       - Fire estop, then halt
 - Clear grid, as it will be recalculated with the next lidar scan
 
-**Kart point to grid point transform:**
+### Kart space to grid space transformation
+We define kart space $K$ to be a vector space of $R^2$ whos origin lays on the front of the kart, and whos unit vectors are swapped (ie. +x is forward, +y is rightward). $K$ s origin is located at the center colomb and max row + 1 in the grid.
 
+We define grid space $G$ to be a vector space of $Z^2$ whos origin is at (0, 0) in a 2d array. Visualising this as a grid, (0,0) will be at the top left corner, and (max R, max C) will be in the bottom right corner.
+
+To translate a point from $K$ to $G$, we apply a linear transform:
+
+$$ T: K \rightarrow G,
+T (\begin{pmatrix}
+R \\
+C
+\end{pmatrix}) = 
+\lfloor
+1/m
+\begin{pmatrix}
+  -1 & 0\\ 
+  0 & 1
+\end{pmatrix}
+*
+\begin{pmatrix}
+R \\
+C
+\end{pmatrix}
++
+\begin{pmatrix}
+n \\
+n - 1 \over 2
+\end{pmatrix}
+\rfloor
+\equiv
+\begin{pmatrix}
+\lfloor n - \frac{R}{m} \rfloor \\
+\lfloor \frac{n - 1}{2} + \frac{C}{m} \rfloor
+\end{pmatrix}
+$$
+
+Where $R$ is the forward component of a kart point, $C$ is the rightwards component of a kart point, and $m$ is the size of a grid square side, in meters.
 
 ## Functional Requirements
 - REQ1: The ECU will take into account the latest velocity or range estimates available on CAN.
