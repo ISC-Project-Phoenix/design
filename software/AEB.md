@@ -18,16 +18,16 @@ is non-deterministic, and thus requires additional deterministic safety systems 
 
 ## Algorithm:
 The general idea will be to take all Lidar points, constrain them to an angle range, then map those 
-points onto a bounded voxel grid, where each voxel is either occupied by an obstacle, free space, or will be occupied by the kart. 
+points onto a bounded occupancy grid, where each cell is either occupied by an obstacle, or free space.
 we will then use the ackermann equations to determine the current path
 of the kart, and create an interpolated line along the path of the kart with the width of the kart.
-If the kart's path attempts to set a voxel high that was already set high by the point clouds, then we have a collision.
+If the kart's path attempts to set a cell high that was already set high by the point clouds, then we have a collision.
 Because this grid should be about ourselves, we can take the euclidean distance from that collision to the kart,
 and find our time to collision (TTC) by finding our velocity at that point along the curve. If that TTC is too low, then estop.
 
 **General Algo:**
 - Given a LiDAR scan within the range (-25, 25) degrees
-- Create an `nxn` grid, where n is the number of voxels and must be odd, and voxels are some real size measurement `m`, defined by `10/n`.
+- Create an `nxn` grid, where n is the number of cells and must be odd, and cells are some real size measurement `m`, defined by `10/n`.
 - Define a collision box about the kart `CB`, defined as a linear transform from the center of the rear axel to the top left and bottom right of area of the vehicle that can collide with things
 - For each LiDAR point in the scan `p`
   - If `p` is < 150mm away from the LiDAR, skip `p`
@@ -45,6 +45,9 @@ are constants for this iteration of the algorithm, herby referred to as `f(t)`. 
     - if `c` is occupied:
       - Fire estop, then halt
 - Clear grid, as it will be recalculated with the next lidar scan
+
+**Kart point to grid point transform:**
+
 
 ## Functional Requirements
 - REQ1: The ECU will take into account the latest velocity or range estimates available on CAN.
