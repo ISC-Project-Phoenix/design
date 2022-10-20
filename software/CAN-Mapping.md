@@ -5,6 +5,7 @@ This file contains proposed CAN ID mappings for various messages defined for use
 ## Priority and IDs
 The following are all CAN2.0B extended identifiers. There exists no remote or error frames on the bus.
 
+- (0x0000000) **Auton Disable**
 - (0x0000001) **Set Brake**
 - (0x0000002) **Lock Brake**
 - (0x0000003) **Unlock Brake**
@@ -12,6 +13,12 @@ The following are all CAN2.0B extended identifiers. There exists no remote or er
 - (0x0000005) **Set Throttle**
 - (0x0000006) **Encoder Count**
 - (0x0000007) **Range Data**
+
+## Master control
+
+- **Auton Disable (0x0000000)** - Tells the interface board to stop sending messages from ROS to the CAN network. 
+The interface board should send a message to the PC, where ROS will state transition to teleop. There will be no auton enable 
+message, rather you will need to toggle auton via a physical switch. 
 
 ## Motor control
 
@@ -24,10 +31,8 @@ The following are all CAN2.0B extended identifiers. There exists no remote or er
 Angles are sent in variable 1, in "Position in revolutions", whatever that unit is.
 
 ## Brake Control
-- **Set Brake** - Sets the linear actuator for the break to a certain distance. Note that this command both
-controls the clutch and motor of the actuator, so it must be used properly to first engage the clutch,
-then the motor, then disable both.
-  - encoding: [see doc](images/Linear Actuator CAN Reference 2.png)
+- **Set Brake** - Sets the brake to a certain percent engagement.
+  - encoding: fixed point percent, encoded as LE u8 in the first data byte.
 - **Lock Brake** - Prevents further braking messages from being sent from the interface to the bus.
   - encoding: no data
 - **Unlock Brake** - Lets more braking messages be sent to the bus, if locked.
