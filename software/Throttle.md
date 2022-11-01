@@ -19,3 +19,4 @@ this board will always write a `Set Speed` message to the ESC.
 - REQ1: On `Set Speed` message received, set the DAC to the appropriate proportion.
 - REQ2: If a signal from the pedal is detected, then set the DAC proportional to that input, and send a `Auton Disable`
 message. Until another CAN message is received, do not send more `Auton Disable` messages. 
+- REQ3: If `Training Mode` is received, then from now on send `Set Speed` messages proportional to the pedal input when depressed.

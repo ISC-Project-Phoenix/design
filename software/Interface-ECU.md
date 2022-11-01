@@ -39,3 +39,4 @@ These are all in the same format as described in the can messages.
 - REQ5: On `Auton Disable` CAN message, stop acting on messages from the PC. Send a message to the PC, where ROS will then state transition to teleop. 
 This should be stored as internal state.
 - REQ6: On the Auton switch being toggled, stop acting on messages from the PC. Send a message to the PC, where ROS will then state transition to teleop. This should be stored as internal state, shared with REQ5.
+- REQ7: On `Training mode` message, relay `Set Throttle`, `Set Brake`, `Set Steer`, `Encoder Count` to the PC when received.

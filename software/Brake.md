@@ -30,3 +30,4 @@ controlling the brakes.
 Also update the internal state for the heartbeats distance.
 - REQ5: On pedal input, send a message to the brake proportional to that input, then send `Auton Disable` to the interface board. Until 
 another `Set Brake` message is received, do not send more `Auton Disable` messages.
+- REQ6: If `Training Mode` is received, then from now on send `Set Brake` messages proportional to the pedal input when depressed.
