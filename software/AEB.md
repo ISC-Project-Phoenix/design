@@ -51,7 +51,8 @@ We implement the forward kinematic function as the normal forward kinematic equa
 over time. This way `f(t)` is asking where the position of the kart is after t seconds.
 
 Formally:
-$$x = \frac{sin(l*s*\phi*t)}{\phi}$$
+
+$$x = \frac{sin(l * s * \phi * t)}{\phi}$$
 
 $$y = \frac{l*(-cos(\frac{s * \phi * t}{l}) + 1)}{\phi}$$
 
