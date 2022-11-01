@@ -35,11 +35,10 @@ and find our time to collision (TTC) by finding our velocity at that point along
   - Get the x,y coordinates of the point relative to the kart by converting from polar to euclidean
   - Apply the linear transform between kart point space and grid space
   - If that x,y point is in an unoccupied cell, then mark it as occupied by obstacle
-- Create a function for the arc created by the current motion of the kart, f(t, velocity, wheelbase, ackermann_steering_angle) where velocity, wheelbase, and ackermann_steering_angle
-are constants for this iteration of the algorithm, herby referred to as `f(t)`. The values from `f(t)` should be the location of the center of the rear axel of the kart at some time, as well as its heading. (TODO)
-- For each `t`; `0 < t <= TTC`; with some step size dependent on `m` (TODO)
-  - `kart_x, kart_y, yaw = f(t)`
-  - Using `CB`, find the defining points of the box in kart space (make sure to rotate by `yaw`)
+- For each `t`; `0 < t <= TTC`; with 10ms steps
+  - `kart_x, kart_y, yaw = f(t)`, where `f(t)` is defined by Kinematics Function
+  - Using `CB`, find the defining points of the box in kart space, then rotate them by `yaw`
+  - Translate all points by the linear translation from the LiDAR to the center of the rear axel 
   - Apply the linear transform from kart space to grid space
   - Find the cells on the grid that fall under `CB`, and call them `c`. (TODO: rasterisation algo?)
   - For each `c`:
@@ -47,10 +46,24 @@ are constants for this iteration of the algorithm, herby referred to as `f(t)`. 
       - Fire estop, then halt
 - Clear grid, as it will be recalculated with the next lidar scan
 
-### Kart space to grid space transformation
-We define kart space $K$ to be a vector space of $R^2$ whos origin lays on the front of the kart, and whos unit vectors are swapped (ie. +x is forward, +y is rightward). $K$ s origin is located at the center colomb and max row + 1 in the grid.
+### Kinematics Function
+We implement the forward kinematic function as the normal forward kinematic equations for ackermann steering integrated 
+over time. This way `f(t)` is asking where the position of the kart is after t seconds.
 
-We define grid space $G$ to be a vector space of $Z^2$ whos origin is at (0, 0) in a 2d array. Visualising this as a grid, (0,0) will be at the top left corner, and (max R, max C) will be in the bottom right corner.
+Formally:
+$$x = \frac{sin(l*s*\phi*t)}{\phi}$$
+
+$$y = \frac{l*(-cos(\frac{s * \phi * t}{l}) + 1)}{\phi}$$
+
+$$\theta = \frac{s * t * tan(\phi)}{l}$$
+
+where $$l$$ is the wheelbase in m, $$s$$ is the speed, $$\phi$$ is the ackermann virtual wheel angle, $$\theta$$ is the vehicles
+heading, and $$(x, y)$$ is the position of the vehicles rear axel in the kart frame.
+
+### Kart space to grid space transformation
+We define kart space $K$ to be a vector space of $R^2$ whose origin lies on the front of the kart, and whos unit vectors are swapped (ie. +x is forward, +y is rightward). $K$ s origin is located at the center colomb and max row + 1 in the grid.
+
+We define grid space $G$ to be a vector space of $Z^2$ whose origin is at (0, 0) in a 2d array. Visualising this as a grid, (0,0) will be at the top left corner, and (max R, max C) will be in the bottom right corner.
 
 To translate a point from $K$ to $G$, we apply a linear transform:
 
