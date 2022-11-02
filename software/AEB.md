@@ -4,7 +4,7 @@
 The Automatic Emergency Braking (AEB) system is designed to be a supplemental safety system
 for the automatic driving. The goal of AEB is to lower the speed of the kart as much as possible
 before a potential collision, to mitigate the damage to both objects. This is necessary as the E2E inference
-is non-deterministic, and thus requires additional deterministic safety systems to ensure functional safety.    
+is non-deterministic, and thus requires additional deterministic safety systems to ensure functional safety.
 
 ## Inputs
 - **UART to LD06 LiDAR** - Tiny 2d LiDAR for perception.
@@ -25,6 +25,8 @@ If the kart's path attempts to set a cell high that was already set high by the 
 Because this grid should be about ourselves, we can take the euclidean distance from that collision to the kart,
 and find our time to collision (TTC) by finding our velocity at that point along the curve. If that TTC is too low, then estop.
 
+TODO re-write above
+
 **General Algo:**
 - Given a LiDAR scan within the range (-25, 25) degrees
 - Create an `nxn` grid, where n is the number of cells and must be odd, and cells are some real size measurement `m`, defined by `10/n`.
@@ -40,11 +42,46 @@ and find our time to collision (TTC) by finding our velocity at that point along
   - Using `CB`, find the defining points of the box in kart space, then rotate them by `yaw`
   - Translate all points by the linear translation from the LiDAR to the center of the rear axel 
   - Apply the linear transform from kart space to grid space
-  - Find the cells on the grid that fall under `CB`, and call them `c`. (TODO: rasterisation algo?)
+  - Find the cells on the grid that fall under `CB`, and call them `c`. See Rasterization Algorithm for details
   - For each `c`:
     - if `c` is occupied:
       - Fire estop, then halt
 - Clear grid, as it will be recalculated with the next lidar scan
+
+### Rasterization Algorithm
+The following is an algorithm to find the points bound by a polygon on a grid, either for collision checking or drawing.
+Essentially all we do is draw the edges first, record the beginning and end indexes drawn in each row, then go through
+and fill in the ranges between all the start and end points.
+
+- Given a list of vertices forming lines
+- Create an array of size `N`, which holds structures of (start, end)
+- for each line:
+  - Use the midpoint line drawing algorithm to find the indexes filled by the line
+  - for each index:
+    - (x, y) = index
+    - if array[x] has been initialized:
+      - if start == y:
+        - continue
+      - if y < start:
+        - if end is null:
+          - end = start
+        - start = y
+      - elif end is null or end < y:
+        - end = y
+    - elif x < N:
+      - Create a new record array[x] = (start, null)
+    - // Here we visit each point on the edges
+    - if !(x < 0 or x >= N or y < 0 or y >= N):
+      - visit index, either to collision check or draw
+
+// Now we visit each point inside the polygon
+- for (x, record) in array:
+  - if record is not null:
+    - if end is not null:
+      - for y in start..end:
+        - if !(x >= N or y >= N):
+          - visit cell
+
 
 ### Kinematics Function
 We implement the forward kinematic function as the normal forward kinematic equations for ackermann steering integrated 
