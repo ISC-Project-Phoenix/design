@@ -17,15 +17,15 @@ is non-deterministic, and thus requires additional deterministic safety systems 
 - **EStop** - direct connection to Estop circuit to allow for emergency braking.
 
 ## Algorithm
-The general idea will be to take all Lidar points, constrain them to an angle range, then map those 
-points onto a bounded occupancy grid, where each cell is either occupied by an obstacle, or free space.
-we will then use the ackermann equations to determine the current path
-of the kart, and create an interpolated line along the path of the kart with the width of the kart.
-If the kart's path attempts to set a cell high that was already set high by the point clouds, then we have a collision.
-Because this grid should be about ourselves, we can take the euclidean distance from that collision to the kart,
-and find our time to collision (TTC) by finding our velocity at that point along the curve. If that TTC is too low, then estop.
 
-TODO re-write above
+Collision detection will be done on an occupancy grid, where that occupancy grid will be 10m x 10m in real units, relative to the LiDAR. 
+This occupancy grid will have a variable resolution. Range point readings will be fed into the grid, marking obstacles about the kart.
+To predict where the kart will be at some time for collision detection, we have integrated the ackermann forward kinematics equations over time,
+which yields indefinite integrals that give us position and heading at any time.
+
+When collision detection is performed, the karts predicted path will be iterated over, and the karts oriented bounding box 
+will be checked against the occupancy grid. If the boxes ever overlay, we have a collision at that time. This will be done until
+our max allowed time to collision, so if we have any collision we know it is one that the estop should be fired over.
 
 **General Algo:**
 - Given a LiDAR scan within the range (-25, 25) degrees
@@ -95,11 +95,11 @@ $$y = \frac{l*(-cos(\frac{s * \phi * t}{l}) + 1)}{\phi}$$
 
 $$\theta = \frac{s * t * tan(\phi)}{l}$$
 
-where $$l$$ is the wheelbase in m, $$s$$ is the speed, $$\phi$$ is the ackermann virtual wheel angle, $$\theta$$ is the vehicles
-heading, and $$(x, y)$$ is the position of the vehicles rear axel in the kart frame.
+where $l$ is the wheelbase in m, $s$ is the speed, $\phi$ is the ackermann virtual wheel angle, $\theta$ is the vehicles
+heading, and $(x, y)$ is the position of the vehicles rear axel in the kart frame.
 
 ### Kart space to grid space transformation
-We define kart space $K$ to be a vector space of $R^2$ whose origin lies on the front of the kart, and whos unit vectors are swapped (ie. +x is forward, +y is rightward). $K$ s origin is located at the center colomb and max row + 1 in the grid.
+We define kart space $K$ to be a vector space of $R^2$ whose origin lies on the front of the kart, and who's unit vectors are swapped (ie. +x is forward, +y is rightward). $K$ s origin is located at the center column and max row + 1 in the grid.
 
 We define grid space $G$ to be a vector space of $Z^2$ whose origin is at (0, 0) in a 2d array. Visualising this as a grid, (0,0) will be at the top left corner, and (max R, max C) will be in the bottom right corner.
 
