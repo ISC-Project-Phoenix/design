@@ -89,9 +89,9 @@ over time. This way `f(t)` is asking where the position of the kart is after t s
 
 Formally:
 
-$$x = \frac{sin(l * s * \phi * t)}{\phi}$$
+$$x = l * cot(\phi) * sin(\frac{s * t * tan(\phi)}{l})$$
 
-$$y = \frac{l*(-cos(\frac{s * \phi * t}{l}) + 1)}{\phi}$$
+$$y = l * cot(\phi) * (-cos(\frac{s * t * tan(\phi)}{l}) + 1)$$
 
 $$\theta = \frac{s * t * tan(\phi)}{l}$$
 
