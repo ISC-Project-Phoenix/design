@@ -10,7 +10,7 @@ The following are all CAN2.0B extended identifiers. There exists no remote or er
 - (0x0000002) **Lock Brake**
 - (0x0000003) **Unlock Brake**
 - (0x0000004) **Set Angle**
-- (0x0000005) **Set Throttle**
+- (0x0000005) **Set Speed**
 - (0x0000006) **Encoder Count**
 - (0x0000007) **Range Data**
 - (0x0000007) **Training Mode**
