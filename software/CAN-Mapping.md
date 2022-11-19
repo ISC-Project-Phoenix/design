@@ -12,7 +12,6 @@ The following are all CAN2.0B extended identifiers. There exists no remote or er
 - (0x0000004) **Set Angle**
 - (0x0000005) **Set Speed**
 - (0x0000006) **Encoder Count**
-- (0x0000007) **Range Data**
 - (0x0000007) **Training Mode**
 
 ## Master control
@@ -45,5 +44,3 @@ Angles are sent in variable 1, in "Position in revolutions", whatever that unit 
 ## Sensor Data
 - **Encoder Count** - Encoder ticks since last CAN message, as well as current velocity.
   - encoding: First 2 bytes are the encoder ticks as a u16, bytes 3-7 are the current velocity in m/s as an IEEE float 32.
-- **Range Data** - Generic range data from the front sensor. Should be generic across sonics, radar, ToF ect. 
-  - encoding: IEEE float 32, in meters.
