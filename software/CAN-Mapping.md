@@ -10,9 +10,10 @@ The following are all CAN2.0B extended identifiers. There exists no remote or er
 - (0x0000002) **Lock Brake**
 - (0x0000003) **Unlock Brake**
 - (0x0000004) **Set Angle**
-- (0x0000005) **Set Speed**
-- (0x0000006) **Encoder Count**
-- (0x0000007) **Training Mode**
+- (0x0000005) **Get Angle**
+- (0x0000006) **Set Speed**
+- (0x0000007) **Encoder Count**
+- (0x0000008) **Training Mode**
 
 ## Master control
 
@@ -30,8 +31,10 @@ if applicable. There is no way to exit training mode, rather you power cycle CAN
 
 ## Steering control
 - **Set Angle** - Sets the steering motor to a certain angle, and holds it.
-  - encoding: [see doc](images/Steering%20motor%201.png). We will use command mode position to use the motor as a big servo.
+  - encoding: Degrees, where left is negative, and right is positive. IEEE f32 in first 4 bytes
 Angles are sent in variable 1, in "Position in revolutions", whatever that unit is.
+- **Get Angle** - Contains the current steering angle of the motor.
+  - encoding: Degrees, where left is negative, and right is positive. IEEE f32 in first 4 bytes
 
 ## Brake Control
 - **Set Brake** - Sets the brake to a certain percent engagement.
