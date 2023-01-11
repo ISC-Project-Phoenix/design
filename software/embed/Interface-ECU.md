@@ -36,7 +36,9 @@ These are all in the same format as described in the can messages.
 - REQ2: Encoder messages on the CAN bus must be sent to the PC.
 - REQ3: The ECU must process messages in full duplex.
 - REQ4: This ECU should have a failsafe such that, if this ECU stops processing, the Estop will be fired.
-- REQ5: On `Auton Disable` CAN message, stop acting on messages from the PC. Send a message to the PC, where ROS will then state transition to teleop. 
+- REQ5: On `Auton Disable` CAN message, stop acting on messages from the PC. Send a message to the PC, where ROS will then state transition to inactive. 
 This should be stored as internal state.
-- REQ6: On the Auton switch being toggled, stop acting on messages from the PC. Send a message to the PC, where ROS will then state transition to teleop. This should be stored as internal state, shared with REQ5.
+- REQ6: On the Auton switch being toggled, stop acting on messages from the PC. Send a message to the PC, where ROS will then state transition to inactive. This should be stored as internal state, shared with REQ5.
 - REQ7: On `Training mode` message, relay `Set Throttle`, `Set Brake`, `Set Steer`, `Encoder Count` to the PC when received.
+- REQ8: This ECU should be able to read the current status of the hardware pause and estop by reading connected pins.
+- REQ9: If pause pin or estop pin go high, send message to the PC, where ROS will then transition system state to inactive.
