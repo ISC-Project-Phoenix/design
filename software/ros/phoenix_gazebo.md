@@ -10,4 +10,4 @@ there are three main launch files:
 
 ## Ros Config
 
-TODO image here
+![](images/phnx_gazebo.jpg)

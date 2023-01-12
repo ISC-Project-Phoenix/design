@@ -8,7 +8,7 @@ The entry point to this package is the [hypervisor node](hypervisor.md).
 
 ## ROS config
 
-TODO link image
+![](images/phnx_training.jpg)
 
 ## Scoring Algorithm
 
