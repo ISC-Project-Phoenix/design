@@ -10,6 +10,12 @@ there are three main launch files:
 
 ## Ros Config
 
+Red = common.py.launch
+
+Black = inference.py.launch
+
+Blue = common.py.launch
+
 ![](images/phnx_robot.svg)
 
 Currently, github isn't on mermaid 9.3.0, so we can't embed this mermaid directly.
