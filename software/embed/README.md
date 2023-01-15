@@ -1,0 +1,12 @@
+This folder contains the design docs for Phoenix's embedded systems.
+
+| File                          | Details                                             |
+|-------------------------------|-----------------------------------------------------|
+| [AEB](AEB.md)                 | Automatic Emergency Braking controller              |
+| [Brake](Brake.md)             | Brake controller                                    |
+| [Encoder](Encoder.md)         | Encoder ECU                                         |
+| [Interface](Interface-ECU.md) | Bridges CAN to ROS. A 'master' ECU of sorts         |
+| [Steering](Steering.md)       | Steering controller, abstracts over EPAS            |
+| [Throttle](Throttle.md)       | Throttle controller                                 |
+| [Wifi-Pause](Throttle.md)     | An implementation of the AKS safety system          |
+| [Can Mappings](Throttle.md)   | An exhaustive list of messages on Phoenix's can bus |
