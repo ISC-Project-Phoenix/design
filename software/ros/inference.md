@@ -16,7 +16,7 @@ The inference node actually runs the trained NN, sending it's output as twist co
 
 ### Configs
 
-- `model_path` - path to the model to load
+- `model_path` - path to the directory of the model to load. This should have a json and h5 keras file. 
 
 ## Notes
 

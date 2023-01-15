@@ -6,6 +6,17 @@ and will then begin the gazebo data collection loop automatically.
 
 The entry point to this package is the [hypervisor node](hypervisor.md).
 
+## Components
+
+See these components of phoenix_training for more in-depth documentation:
+
+| node                          | details                                                                 |
+|-------------------------------|-------------------------------------------------------------------------|
+| [hypervisor](hypervisor.md)   | Orchestrates the overall training algorithm, as detailed below.         |
+| [run_mgr](run_mgr.md)         | Handles online score calculation and determines when a run is finished. |
+| [data_logger](data_logger.md) | Handles data formatting and conversion to files on disk.                |
+
+
 ## ROS structure
 
 This is the logical node structure of the training loop.
@@ -33,13 +44,7 @@ stateDiagram-v2
     }
 ```
 
-## Scoring Algorithm
-
-Scoring is archived by pointing a camera in gazebo towards a colored strip under the ground. This colored strip
-represents the desirable area for the kart to be in. The run should lose points if the camera stops seeing this color.
-This camera is also used for finding the finish line to end runs.
-
-## Algorithm (implemented by hypervisor)
+## Algorithm
 
 The overall training algorithm:
 
@@ -75,7 +80,3 @@ graph BT
     train --> env[Overwrite path to model with the path to this new model]
     env --> loop
 ```
-
-## Training data format
-
-TODO detail data format

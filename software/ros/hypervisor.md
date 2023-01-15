@@ -20,7 +20,7 @@ of each run.
 
 ### Genetic Algorithm
 
-This node will need to cache run score tuples. 
+This node will need to cache run score tuples to speed up trimming.
 
 TODO detail criteria for how we trim old runs based off score
 
