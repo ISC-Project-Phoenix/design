@@ -56,7 +56,7 @@ The overall training algorithm:
 Visualised:
 
 ```mermaid
-graph RL
+graph BT
     init((Input path to pre trained model)) --> loop{Score converged at maxima?}
     loop -- yes --> Exit(((exit)))
 
