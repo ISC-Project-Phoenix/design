@@ -8,7 +8,8 @@ The inference node actually runs the trained NN, sending it's output as twist co
 
 - `/camera/mid/rgb` - Camera input the inference will run on. Should be the same camera that was used in the training
   data.
-- `/odom` - Odom source. This node will only use the velocity component
+- `/odom_ack` - AckermannDrive messages to feed encoder values to inference. Encoder values should be m/s in the
+  velocity feild.
 
 ### Publishes
 
@@ -16,7 +17,7 @@ The inference node actually runs the trained NN, sending it's output as twist co
 
 ### Configs
 
-- `model_path` - path to the directory of the model to load. This should have a json and h5 keras file. 
+- `model_path` - path to the directory of the model to load. This should have a json and h5 keras file.
 
 ## Notes
 

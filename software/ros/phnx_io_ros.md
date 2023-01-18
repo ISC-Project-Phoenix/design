@@ -10,7 +10,11 @@ Also see [gz_io_ros](gz_io_ros.md) for the fake of this node used in sim.
 
 ### Publishes
 
-- `/odom` - odom generated from embedded sources, currently just the encoder, so only velocity needs to be recorded.
+- `/odom_ack` - AckermannDrive messages representing the current state of the kart.
+  These messages contain steering in the steering field, throttle/brake in the acceleration feild (m/s), and current kart velocity
+  in the velocity feild as (m/s).
+    - This should be built by saving the last message from /ack_vel, then copying the velocity feild (the throttle
+      input) to the acceleration feild, then writing the next encoder velocity into the velocity feild and publishing.
 
 ### Subscribes
 
