@@ -15,7 +15,7 @@ Sync the above two topics.
 
 ### Publishes
 
-- `/training_data` - AckermannDrive messages representing the current state of the kart.
+- `/odom_ack` - AckermannDrive messages representing the current state of the kart.
   These messages contain steering in the steering field, throttle/brake in the acceleration feild (m/s), and current kart velocity
   in the velocity feild as (m/s).
 
