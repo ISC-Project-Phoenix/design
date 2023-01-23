@@ -7,14 +7,22 @@ consists of images from the camera, as well as a CSV labeling these images with 
 
 ### Config
 
-- `data_path` - Directory to write data into. Note that log data will be in `data_path`/"%Y-%m-%d-%H-%M-%S-%f"/ not in
+- `data_path` - Directory to write data into. Note that log data will be in `data_path`/"%Y-%m-%d-%H-%M-%S"/ not in
   this folder directly.
+
+The following config values refer to fields of /odom_ack messages:
+- `max_throttle_speed` - Velocity at which we consider the throttle fully pressed. This should match the config set in
+  phnx_io_ros, or gz_io_ros.
+
+- `max_braking_speed` - Negative velocity at which we consider the brake fully pressed. This should match the field set
+  in
+  phnx_io_ros, or gz_io_ros.
+
+- `max_steering_rad` - Max steering wheel angle, in radians. Assumed to be symmetrical.
 
 ### Subscribes
 
-- `/odom_ack` - AckermannDrive messages representing the current state of the kart.
-  These messages contain steering in the steering field, throttle/brake in the acceleration feild (m/s), and current kart velocity
-  in the velocity feild as (m/s).
+- `/odom_ack` - AckermannDrive messages representing the current state of the kart. See module readme for more info.
 - `/camera/mid/rgb` - Camera data, to be synced with training data
 
 Note that this node must sync the two topics.
@@ -22,6 +30,7 @@ Note that this node must sync the two topics.
 ### Publishes
 
 - `/run_folder` - Path to the folder we are currently writing images to. That is `data_path`/something
+    - Qos: This uses reliable transport and transient local durability
 
 ### Data format
 

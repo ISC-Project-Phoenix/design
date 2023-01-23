@@ -15,11 +15,9 @@ Sync the above two topics.
 
 ### Publishes
 
-- `/odom_ack` - AckermannDrive messages representing the current state of the kart.
-  These messages contain steering in the steering field, throttle/brake in the acceleration feild (m/s), and current kart velocity
-  in the velocity feild as (m/s).
+- `/odom_ack` - AckermannDrive messages representing the current state of the kart. See module readme for more info.
 
 ### Conversion Algorithm
 
-Converting the odom to training data will amount to converting the twist to ackermann steering and storing that in the steering feild,
-then copying the twist's velocity_x into the acceleration feild, and finally copying the odom's velocity_x into the velocity feild.
+Converting the odom to training data will amount to converting the twist to ackermann steering and storing that in the steering field,
+then copying the twist's velocity_x into the acceleration field, and finally copying the odom's velocity_x into the velocity field.

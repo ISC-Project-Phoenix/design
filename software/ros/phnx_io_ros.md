@@ -8,13 +8,18 @@ See [the interface docs for more info](../embed/Interface-ECU.md).
 
 Also see [gz_io_ros](gz_io_ros.md) for the fake of this node used in sim.
 
+### Config
+
+The following config values refer to fields of /ack_vel messages:
+- `max_throttle_speed` - Velocity at which we consider the throttle fully pressed.
+
+- `max_braking_speed` - Negative velocity at which we consider the brake fully pressed.
+
 ### Publishes
 
-- `/odom_ack` - AckermannDrive messages representing the current state of the kart.
-  These messages contain steering in the steering field, throttle/brake in the acceleration feild (m/s), and current kart velocity
-  in the velocity feild as (m/s).
-    - This should be built by saving the last message from /ack_vel, then copying the velocity feild (the throttle
-      input) to the acceleration feild, then writing the next encoder velocity into the velocity feild and publishing.
+- `/odom_ack` - AckermannDrive messages representing the current state of the kart. See module readme for more info.
+    - This should be built by saving the last message from /ack_vel, then copying the velocity field (the throttle
+      input) to the acceleration field, then writing the next encoder velocity into the velocity field and publishing.
 
 ### Subscribes
 

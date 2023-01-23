@@ -8,8 +8,7 @@ The inference node actually runs the trained NN, sending it's output as twist co
 
 - `/camera/mid/rgb` - Camera input the inference will run on. Should be the same camera that was used in the training
   data.
-- `/odom_ack` - AckermannDrive messages to feed encoder values to inference. Encoder values should be m/s in the
-  velocity feild.
+- `/odom_ack` - AckermannDrive messages to feed encoder values to inference. See module readme for more info.
 
 ### Publishes
 
