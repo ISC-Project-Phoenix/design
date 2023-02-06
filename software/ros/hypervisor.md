@@ -16,7 +16,7 @@ See [here for more details](phoenix_training.md).
 ### Subscribes
 
 - `/order_66` - Kills the child process `Ros2 launch phoenix_training training.py.launch` when received. This should be sent at the end
-of each run.
+of each run. This contains the runs score, so it can be used to build the map of run:score without touching the disk.
 
 ### Genetic Algorithm
 

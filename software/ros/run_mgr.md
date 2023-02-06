@@ -14,7 +14,7 @@ hypervisor.
 
 ### Publishes
 
-- `/order_66` - Publishes a message when a run is done. Kills all nodes but hypervisor.
+- `/order_66` - Publishes a message when a run is done. Kills all nodes but hypervisor. Contains the last runs score.
 
 ## Scoring Algorithm
 
@@ -28,7 +28,7 @@ In detail:
 - For each second, decrease score by 1 (thus serving as a timeout)
 - If either score == 0 or the finish line was seen 
   - Write score to score.txt in `/run_folder`. 
-  - Fire `/order_66`
+  - Fire `/order_66` with score
 
 ### Score file
 
