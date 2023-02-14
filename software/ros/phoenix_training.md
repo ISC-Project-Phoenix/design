@@ -29,7 +29,7 @@ stateDiagram-v2
 
     state runtime {
         gz_bridge --> gz_io_ros: /odom
-        gz_bridge --> run_mgr: /camera/mid/rgb
+        gz_bridge --> run_mgr: /camera/score/rgb
         gz_bridge --> inference: /camera/mid/rgb
         gz_bridge --> data_logger: /camera/mid/rgb
 
