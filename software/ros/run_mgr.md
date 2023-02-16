@@ -18,9 +18,12 @@ hypervisor.
 
 ## Scoring Algorithm
 
-Scoring is archived by pointing a camera in gazebo towards a colored strip under the ground. This colored strip
+Scoring is archived by pointing a camera in gazebo towards a colored strip in the sky. This colored strip
 represents the desirable area for the kart to be in. The run should lose points if the camera stops seeing this color.
 This camera is also used for finding the finish line to end runs.
+
+Using a colored strip like this is very convenient, since it can be created by simply masking a track image in 
+photoshop.
 
 In detail:
 - Start run with score of 1000
@@ -29,6 +32,11 @@ In detail:
 - If either score == 0 or the finish line was seen 
   - Write score to score.txt in `/run_folder`. 
   - Fire `/order_66` with score
+
+  
+### Current good areas mask
+
+![](images/phnx_track_good_areas.png)
 
 ### Score file
 
