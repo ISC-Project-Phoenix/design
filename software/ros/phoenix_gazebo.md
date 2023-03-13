@@ -4,17 +4,17 @@ This package contains the launch files for running phoenix in its gazebo simulat
 should attempt to be a virtual version of [phoenix_robot](phoenix_robot.md) as close as possible.
 
 there are three main launch files:
-- inference.py.launch: Runs the production version of phoenix, using the NN inference to drive the kart
-- data_collect.py.launch: Runs phoenix in data collection mode, labeling images for offline training
-- common.py.launch: Launch file that launches nodes common between the above two files
+- inference.launch.py: Runs the production version of phoenix, using the NN inference to drive the kart
+- data_collect.launch.py: Runs phoenix in data collection mode, labeling images for offline training
+- common.launch.py: Launch file that launches nodes common between the above two files
 
 ## Ros Config
 
-Red = common.py.launch
+Red = common.launch.py
 
-Black = inference.py.launch
+Black = inference.launch.py
 
-Blue = common.py.launch
+Blue = data_collect.launch.py
 
 ![](images/phnx_gazebo.svg)
 
