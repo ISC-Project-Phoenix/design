@@ -16,7 +16,32 @@ Black = inference.py.launch
 
 Blue = common.py.launch
 
-![](images/phnx_robot.svg)
+```mermaid
+stateDiagram-v2
+    classDef common color:white,fill:red
+    classDef data color:white,fill:blue
+    classDef prod color:white,fill:black
 
-Currently, github isn't on mermaid 9.3.0, so we can't embed this mermaid directly.
-Here's the [source.](https://mermaid.live/edit#pako:eNqFVE1v4yAQ_SsIqbdElvbIYaVVW2kv20ulPVlCE5g4bPiIBpxsVfW_LwbXUR1n7QsY3nvzZhh45ypo5ILHBAmfDHQEbnv-1nqWP2UhxifcMxWcCz4PNpC4HEzCzd5YKwj1DKkhwS1uZ3ucAU8U9BIQ1LH1FfvwwH4C6QsQMuMT0h4UxroX4Ci1EGJ0tt1-L6GlDV2HlDeGP8EaBQ4JGmd0Q92uch-hEk4H_1eaICnESUmwZz-UhDbsOaZwYqUwlbeEL0JZULAfKvWQTCmTc-D16HTKZVzOo08UrEUaEeliYpIpyJw7Usb4r_LLPpuMlme0VUOTOaN02bmMF5PU4avEf0JkJQq7kBrl9FXvT3gb4AkthpMs9Fm17wacW5sKUEr5mf5KSYslWRjyWrBb0xFHVNVboa07H1Wr4uR86CrjuxXPiw0YdHCyNHU5phtIZZp4FOzx9XdkQ4cYB93Q6FP8l5c6NX6PhF5hJpcLtJqPh_P1JBYuzVzxzpW5m_MC_zNjvuFu6DWj8_vyPui0PB3QYctFnnrsE4Ftees_MhT6FF7fvOIiUY8b3p_09UXiYg825lXUJgX6Vd-s8nR9_ANx1qMI)
+    %% Hardware interfaces
+    oak_d:::common --> data_logger:::data: /camera/mid/rgb
+    Can --> phnx_io_ros:::common: Encoder, Estop state
+    phnx_io_ros:::common --> Can: Actuation commands
+    
+    %% command controllers
+    twist_to_ackermann:::common --> phnx_io_ros:::common: /ack_vel
+    drive_mode_switch:::common --> twist_to_ackermann:::common: /robot/cmd_vel
+    joy_to_teleop_twist:::common --> drive_mode_switch:::common: /ack_vel
+    
+    %% state control
+    phnx_io_ros:::common --> robot_state_controller:::common: /robot/set_state
+    robot_state_controller:::common --> drive_mode_switch:::common: /robot/state
+
+    %% logging
+    phnx_io_ros:::common --> data_logger:::data: /odom_ack
+    data_logger:::data --> disk: CSVs and images
+
+    %% NN
+    inference:::prod --> drive_mode_switch:::common: /nav_vel
+    oak_d:::common --> inference:::prod: /camera/mid/rgb
+    phnx_io_ros:::common --> inference:::prod: /odom_ack
+```
