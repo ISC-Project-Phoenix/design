@@ -27,6 +27,8 @@ outputs ackermannDrive and Twist messages directly, bypassing the need for somet
 
 - `max_steering_rad` - Max steering wheel angle, in radians. Assumed to be symmetrical.
 
+- `wheelbase` - Wheelbase of phoenix.
+
 ## Notes
 
 The raw joy interface gives wheels and pedals in percents, so it's best to first create an ackermann message using the
