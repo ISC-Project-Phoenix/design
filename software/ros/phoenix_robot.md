@@ -28,9 +28,8 @@ stateDiagram-v2
     phnx_io_ros:::common --> Can: Actuation commands
     
     %% command controllers
-    twist_to_ackermann:::common --> phnx_io_ros:::common: /ack_vel
-    drive_mode_switch:::common --> twist_to_ackermann:::common: /robot/cmd_vel
-    joy_to_teleop_twist:::common --> drive_mode_switch:::common: /ack_vel
+    drive_mode_switch:::common --> phnx_io_ros:::common: /robot/ack_vel
+    logi_g29:::common --> drive_mode_switch:::common: /ack_vel
     
     %% state control
     phnx_io_ros:::common --> robot_state_controller:::common: /robot/set_state
@@ -41,7 +40,7 @@ stateDiagram-v2
     data_logger:::data --> disk: CSVs and images
 
     %% NN
-    inference:::prod --> drive_mode_switch:::common: /nav_vel
+    inference:::prod --> drive_mode_switch:::common: /nav_ack_vel
     oak_d:::common --> inference:::prod: /camera/mid/rgb
     phnx_io_ros:::common --> inference:::prod: /odom_ack
 ```

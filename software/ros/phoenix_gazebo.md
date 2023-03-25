@@ -26,12 +26,13 @@ stateDiagram-v2
     Gazebo --> gz_bridge:::common
     gz_bridge:::common --> Gazebo
     gz_bridge:::common --> data_logger:::data: /camera/mid/rgb
-    gz_bridge:::common --> gz_io_ros:::common: /odom
+
     
     %% command controllers
-    drive_mode_switch:::common --> gz_bridge:::common: /robot/cmd_vel
-    drive_mode_switch:::common --> gz_io_ros:::common: /robot/cmd_vel
-    joy_to_teleop_twist:::common --> drive_mode_switch:::common: /cmd_vel
+    drive_mode_switch:::common --> gz_io_ros:::common: /robot/ack_vel
+    gz_io_ros:::common --> gz_bridge:::common: /robot/cmd_vel
+    gz_io_ros:::common --> gz_bridge:::common: /robot/steering_angle
+    logi_g29:::common --> drive_mode_switch:::common: /ack_vel
 
     %% logging
     gz_io_ros:::common --> data_logger:::data: /odom_ack
@@ -39,7 +40,8 @@ stateDiagram-v2
 
     %% NN
     gz_io_ros:::common --> inference:::prod: /odom_ack
-    inference:::prod --> drive_mode_switch:::common: /nav_vel
+    inference:::prod --> drive_mode_switch:::common: /nav_ack_vel
     gz_bridge:::common --> inference:::prod: /camera/mid/rgb
 
+    gz_bridge:::common --> gz_io_ros:::common: /odom
 ```
