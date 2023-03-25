@@ -2,7 +2,7 @@
 
 ## Summary
 
-The inference node actually runs the trained NN, sending it's output as twist commands.
+The inference node actually runs the trained NN, sending it's output as ackermannDrive commands
 
 ### Subscribes
 
@@ -12,8 +12,7 @@ The inference node actually runs the trained NN, sending it's output as twist co
 
 ### Publishes
 
-- `/nav_vel` - Twist message corresponding to NN output
-- `/ack_vel` - AckermannDrive message corresponding to NN output
+- `/nav_ack_vel` - AckermannDrive message corresponding to NN output
 
 ### Configs
 
@@ -32,10 +31,5 @@ The inference node actually runs the trained NN, sending it's output as twist co
 
 It would be nice if this node could be made flexible across CUDA and CPU, to allow for more people to run it.
 
-The model currently outputs things as percents, so we will need to multiply them by our max values to get values for
-a twist output. It's best to do this by first creating an ackermann message by multiplying the max pedal speeds by their
-percent,
-(giving brake priority over throttle), getting the wheel angle by multiplying its percent by max angle, then applying
-the
-steering ratio to the wheel angle to get the final virtual ackermann angle. This message can then be ackermann ->
-Twisted.
+The model currently outputs things as percents, so we will need to multiply them by our max values to get values for the 
+command. We can create an ackermannDrive message by just running the steering wheel angle through the steering ratio.
