@@ -21,7 +21,7 @@ Sync the above two topics.
 
 - `/odom_ack` - AckermannDrive messages representing the current state of the kart. See module readme for more info.
 - `/robot/cmd_vel` - Twist messages to control the drive part of sim actuation. This only contains linear velocity.
-- `/robot/steering_angle` - doubles that control the steering part of sim actuation. TODO document format
+- `/robot/steering_angle` - Doubles that control the steering part of sim actuation. These are virtual ackermann values we want the wheels to be at, in the normal ROS convention.
 
 ### Notes
 
