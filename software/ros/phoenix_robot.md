@@ -4,17 +4,17 @@ This package contains launch files for running phoenix IRL.
 
 there are three main launch files:
 
-- inference.py.launch: Runs the production version of phoenix, using the NN inference to drive the kart
-- data_collect.py.launch: Runs phoenix in data collection mode, labeling images for offline training
-- common.py.launch: Launch file that launches nodes common between the above two files
+- inference.launch.py: Runs the production version of phoenix, using the NN inference to drive the kart
+- data_collect.launch.py: Runs phoenix in data collection mode, labeling images for offline training
+- common.launch.py: Launch file that launches nodes common between the above two files
 
 ## Ros Config
 
-Red = common.py.launch
+Red = common.launch.py
 
-Black = inference.py.launch
+Black = inference.launch.py
 
-Blue = common.py.launch
+Blue = common.launch.py
 
 ```mermaid
 stateDiagram-v2
@@ -28,9 +28,8 @@ stateDiagram-v2
     phnx_io_ros:::common --> Can: Actuation commands
     
     %% command controllers
-    twist_to_ackermann:::common --> phnx_io_ros:::common: /ack_vel
-    drive_mode_switch:::common --> twist_to_ackermann:::common: /robot/cmd_vel
-    joy_to_teleop_twist:::common --> drive_mode_switch:::common: /ack_vel
+    drive_mode_switch:::common --> phnx_io_ros:::common: /robot/ack_vel
+    logi_g29:::common --> drive_mode_switch:::common: /ack_vel
     
     %% state control
     phnx_io_ros:::common --> robot_state_controller:::common: /robot/set_state
@@ -41,7 +40,7 @@ stateDiagram-v2
     data_logger:::data --> disk: CSVs and images
 
     %% NN
-    inference:::prod --> drive_mode_switch:::common: /nav_vel
+    inference:::prod --> drive_mode_switch:::common: /nav_ack_vel
     oak_d:::common --> inference:::prod: /camera/mid/rgb
     phnx_io_ros:::common --> inference:::prod: /odom_ack
 ```

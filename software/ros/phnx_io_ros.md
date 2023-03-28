@@ -23,7 +23,7 @@ The following config values refer to fields of /ack_vel messages:
 
 ### Subscribes
 
-- `/ack_vel` - Output from `twist_to_ackermann`. Braking commands are encoded as negative velocity.
+- `/ack_vel` - AckermanDrive command to actuate on the kart.
 
 ### Services Used
 

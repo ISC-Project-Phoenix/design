@@ -14,8 +14,6 @@ outputs ackermannDrive and Twist messages directly, bypassing the need for somet
 
 - `/ack_vel` - AckermannDrive outputs from the wheel
 
-- `/cmd_vel` - Twist outputs from the wheel
-
 ### Params
 
 - `max_throttle_speed` - Velocity at which we consider the throttle fully pressed. This should match the config set in
@@ -34,8 +32,6 @@ outputs ackermannDrive and Twist messages directly, bypassing the need for somet
 The raw joy interface gives wheels and pedals in percents, so it's best to first create an ackermann message using the
 max throttle brake and wheel params. During this creation, we need to convert the wheel angle to virtual ackermann wheel
 angle by using phoenix's steering ratio, and convert pedal percents by just multiplying percent pressed by max values.
-We may as well pub this, and then also ackermann->twist it to output our actual
-final twist.
 
 If the wheel angle is greater than the max angle, we should pin it to max. Could use force feedback to help with this if
 we get it figured out.

@@ -28,21 +28,28 @@ stateDiagram-v2
     hypervisor --> runtime: spawns
 
     state runtime {
-        gz_bridge --> gz_io_ros: /odom
+
+        gazebo --> gz_bridge
+        gz_bridge --> gazebo
+        
         gz_bridge --> run_mgr: /camera/score/rgb
         gz_bridge --> inference: /camera/mid/rgb
         gz_bridge --> data_logger: /camera/mid/rgb
 
         gz_io_ros --> inference: /odom_ack
         gz_io_ros --> data_logger: /odom_ack
+
+        gz_io_ros --> gz_bridge: /robot/cmd_vel
+        gz_io_ros --> gz_bridge: /robot/steering_angle
         
         data_logger --> disk: CSVs and images
         data_logger --> run_mgr: /run_folder
 
-        inference --> gz_bridge: /robot/cmd_vel
-        inference --> gz_io_ros: /robot/cmd_vel
+        inference --> gz_io_ros: /robot/ack_vel
 
         run_mgr --> disk: Score file
+
+        gz_bridge --> gz_io_ros: /odom
     }
 ```
 
