@@ -2,7 +2,7 @@
 
 ## Summary
 
-This node collects training data for all modes of training (on the kart, in gazebo, or in a training loop). This data
+This node collects a subset of data from the kart in a tabular format (as opposed to a bag). This data
 consists of images from the camera, as well as a CSV labeling these images with the karts status at that time.
 
 ### Config
@@ -12,11 +12,11 @@ consists of images from the camera, as well as a CSV labeling these images with 
 
 The following config values refer to fields of /odom_ack messages:
 - `max_throttle_speed` - Velocity at which we consider the throttle fully pressed. This should match the config set in
-  phnx_io_ros, or gz_io_ros.
+  phnx_io_ros, or gz_io_ros. (TODO remove this and instead just get directly from the output of the control loop in PIR)
 
 - `max_braking_speed` - Negative velocity at which we consider the brake fully pressed. This should match the field set
   in
-  phnx_io_ros, or gz_io_ros.
+  phnx_io_ros, or gz_io_ros.(TODO remove this and instead just get directly from the output of the control loop in PIR)
 
 - `max_steering_rad` - Max steering wheel angle, in radians. Assumed to be symmetrical.
 
@@ -41,17 +41,14 @@ as the current system time formatted as "%Y-%m-%d-%H-%M-%S-%f".jpg.
 
 The CSV headers are
 
-```image_file_name / steering_angle / throttle / brake / linux_time / velocity / velocity_x / velocity_y / velocity_z / position_x / position_y / position_z```
+```image_file_name / steering_angle / throttle / brake / linux_time / velocity / velocity_x / velocity_y / velocity_z```
 
 - `image_file_name`: Path to image these labels apply to. Should be in current directory.
-- `steering_angle `: Steering *wheel* angle in a range of -1 to 1
-- `throttle       `: Throttle pedal input, in range 0-1.0
-- `brake          `: Brake pedal input, in range 0-1.0
+- `steering_angle `: Steering *wheel* angle in a range of -1 to 1 (TODO change to exact angle)
+- `throttle       `: Throttle pedal input from control loop, in range 0-1.0
+- `brake          `: Brake pedal input from control loop, in range 0-1.0
 - `linux_time     `: Unix timestamp of the record, including ns.
 - `velocity       `: Speed of the vehicle in m/s.
 - `velocity_x     `: Velocity of the vehicle in the x-axis.
 - `velocity_y     `: Velocity of the vehicle in the y-axis.
 - `velocity_z     `: Velocity of the vehicle in the z-axis.
-- `position_x     `: TODO this was used in OSCAR, but we can't get this from IRL data, so just don't use for now
-- `position_y     `: TODO this was used in OSCAR, but we can't get this from IRL data, so just don't use for now
-- `position_z     `: TODO this was used in OSCAR, but we can't get this from IRL data, so just don't use for now

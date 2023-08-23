@@ -3,11 +3,10 @@ Ros components.
 
 ## Overview
 
-| package                                 | use                                                                                                                                                   |
-|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [phoenix_robot](phoenix_robot.md)       | Running phoenix IRL, for racing or data collection                                                                                                    |
-| [phoenix_gazebo](phoenix_gazebo.md)     | Running a virtual version of phoenix in gazebo, for testing or data collection                                                                        |
-| [phoenix_training](phoenix_training.md) | Trains phoenix automatically off a given model, incrementally improving itself by gathering new data in sim and then training off it algorithmically. |
+| package                             | use                                                                            |
+|-------------------------------------|--------------------------------------------------------------------------------|
+| [phoenix_robot](phoenix_robot.md)   | Running phoenix IRL, for racing or data collection                             |
+| [phoenix_gazebo](phoenix_gazebo.md) | Running a virtual version of phoenix in gazebo, for testing or data collection |
 
 ### On the use of AckermannDrive messages
 
@@ -18,7 +17,7 @@ nodes will send twist messages. These twist messages represent throttle as a vel
 velocity.
 As a result of this, nodes at the edge will need to store a max_throttle_speed or similar parameters in order to convert
 speed back to percents. It is very important these values are consistent across all nodes including joy inputs, else
-NN output will be biased.
+NN output will be biased. (TODO update)
 
 To be clear on the format:
 
@@ -27,7 +26,7 @@ To be clear on the format:
 - `steering_angle` - Steering angle of the **wheel**, not ackermann wheel. Positive yaw is to the left, in rad.
 - `speed` - Velocity the kart is actually moving at, from encoders or gazebo odom.
 - `accelleration` - Represents current throttle/brake position as a speed, where a negative speed represents braking.
-  This is done as controllers output speed, not percents.
+  This is done as controllers output speed, not percents. (TODO just make 0-1?)
   We leave it up to end nodes to convert back to percents if needed.
     - _Note that it is not possible to represent the brake and throttle being pressed simultaneously._ This is inherent
       from the same constraint

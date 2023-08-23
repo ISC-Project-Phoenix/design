@@ -8,5 +8,4 @@ This folder contains the design docs for Phoenix's embedded systems.
 | [Interface](Interface-ECU.md)  | Bridges CAN to ROS. A 'master' ECU of sorts         |
 | [Steering](Steering.md)        | Steering controller, abstracts over EPAS            |
 | [Throttle](Wifi-Pause.md)      | Throttle controller                                 |
-| [Wifi-Pause](Throttle.md)      | An implementation of the AKS safety system          |
 | [Can Mappings](CAN-Mapping.md) | An exhaustive list of messages on Phoenix's can bus |

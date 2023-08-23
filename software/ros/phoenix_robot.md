@@ -4,23 +4,29 @@ This package contains launch files for running phoenix IRL.
 
 there are three main launch files:
 
-- inference.launch.py: Runs the production version of phoenix, using the NN inference to drive the kart
-- data_collect.launch.py: Runs phoenix in data collection mode, labeling images for offline training
+- prod.launch.py: Runs the production version of phoenix
+- data_collect.launch.py: Runs phoenix in data collection mode, configuring data_logger alongside prod. (TODO impl)
 - common.launch.py: Launch file that launches nodes common between the above two files
+- ultilibot.launch.py: Launch file used on a remote computer networked to the kart. Launches
+teleop nodes.
 
 ## Ros Config
 
 Red = common.launch.py
 
-Black = inference.launch.py
+Black = prod.launch.py
+
+Purple = utilibot.launch.py
 
 Blue = common.launch.py
 
+(TODO update when nodes are done)
 ```mermaid
 stateDiagram-v2
     classDef common color:white,fill:red
     classDef data color:white,fill:blue
     classDef prod color:white,fill:black
+    classDef util color:white,fill:purple
 
     %% Hardware interfaces
     oak_d:::common --> data_logger:::data: /camera/mid/rgb
@@ -29,7 +35,7 @@ stateDiagram-v2
     
     %% command controllers
     drive_mode_switch:::common --> phnx_io_ros:::common: /robot/ack_vel
-    logi_g29:::common --> drive_mode_switch:::common: /ack_vel
+    logi_g29:::util --> drive_mode_switch:::common: /ack_vel
     
     %% state control
     phnx_io_ros:::common --> robot_state_controller:::common: /robot/set_state
