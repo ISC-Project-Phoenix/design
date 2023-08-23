@@ -13,10 +13,10 @@ amended to make sure the driver's arms remain attached.
 # Inputs
 
 - **Steering motor** - Not necessarily a CAN line, could be PWM or other protocol
-- **Priority CAN** - `Set Angle` messages
+- **CAN** - `Set Angle` messages
 
 # Output 
-- **Priority CAN** - `Get Angle` messages
+- **CAN** - `Get Angle` messages
 
 # Functional Requirements
 - REQ1: On receiving a `Set Angle` message, the steering motor will hold that selected angle until another `Set Angle` message is received.

@@ -8,12 +8,11 @@ in the ECU network. It communicates over UART.
 
 ## Inputs
 - **UART from PC** - Over the virtual COM port on the usb
-- **Perception CAN** - Messages from the perception bus
-- **Auton switch** - Physical switch to toggle auton state, physical equivalent to `Auton Disable` CAN message
+- **CAN** - Messages from CAN
 
 ## Outputs
 - **UART to PC** - Sends select CAN messages to the PC. Currently these are all perception
-- **Priority CAN** - Sends messages from the PC to CAN. Currently these are all high priority
+- **CAN** - Sends messages from the PC to CAN
 
 ## Messages 
 

@@ -8,12 +8,12 @@ that can be used to cancel auton and take control if someone is actually sitting
 this board will always write a `Set Speed` message to the ESC.
 
 ## Inputs
-- **Priority CAN** - For `Set Speed` messages.
+- **CAN** - For `Set Speed` messages.
 - **Physical 0-5k Pedal** - Physical pedal input.
 
 ## Outputs
 - **ESC Connection** - A physical connection to the ESC
-- **Priority CAN** - `Auton Disable` messages
+- **CAN** - `Auton Disable` messages
 
 ## Functional Requirements
 - REQ1: On `Set Speed` message received, set the DAC to the appropriate proportion.

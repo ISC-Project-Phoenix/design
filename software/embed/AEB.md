@@ -9,7 +9,7 @@ is non-deterministic, and thus requires additional deterministic safety systems 
 ## Inputs
 - **UART to LD06 LiDAR** - Tiny 2d LiDAR for perception.
 
-- **Perception CAN**
+- **CAN**
   - **Encoder data** - any sensor that outputs `Encoder Count` frames.
   - **Steering data** - any sensor that outputs `Set Angle` frames.
 
