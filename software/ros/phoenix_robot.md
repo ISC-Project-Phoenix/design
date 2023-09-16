@@ -61,4 +61,6 @@ stateDiagram-v2
     hybrid_pp:::common --> drive_mode_switch: /nav_ack_vel
 
     isc_sick:::common --> hybrid_pp:::common: /scan
+
+    kalman:::common --> phnx_io_ros: /odom
 ```
