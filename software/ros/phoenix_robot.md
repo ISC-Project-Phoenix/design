@@ -20,7 +20,7 @@ Purple = utilibot.launch.py
 
 Blue = common.launch.py
 
-(TODO update when nodes are done)
+(TODO impliment this in node docs)
 ```mermaid
 stateDiagram-v2
     classDef common color:white,fill:red
@@ -45,8 +45,20 @@ stateDiagram-v2
     phnx_io_ros:::common --> data_logger:::data: /odom_ack
     data_logger:::data --> disk: CSVs and images
 
-    %% NN
-    inference:::prod --> drive_mode_switch:::common: /nav_ack_vel
-    oak_d:::common --> inference:::prod: /camera/mid/rgb
-    phnx_io_ros:::common --> inference:::prod: /odom_ack
+    %% Localisation
+    phnx_io_ros:::common --> kalman:::common: /odom_can
+    oak_d:::common --> kalman:::common: /camera/mid/imu
+
+    %% new stuff
+    oak_d:::common --> obj_detector:::common: /camera/mid/rgb
+    obj_detector:::common --> obj_tracker:::common: /object_poses
+
+    kalman:::common --> obj_tracker:::common: /odom
+    obj_tracker:::common --> kalman:::common: /odom_tracker
+    obj_tracker:::common --> obj_planner:::common: /tracks
+
+    obj_planner:::common --> hybrid_pp:::common: /path
+    hybrid_pp:::common --> drive_mode_switch: /nav_ack_vel
+
+    isc_sick:::common --> hybrid_pp:::common: /scan
 ```
