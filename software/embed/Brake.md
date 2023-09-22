@@ -9,12 +9,12 @@ This board will also take a pedal input, acting as a brake by wire system with a
 
 # Inputs
 
-- **Priority CAN** - `Set Brake` messages
+- **CAN** - `Set Brake` messages
 - **0-5k Pedal** - For manual braking
 
 # Outputs
 - **Actuator CAN** - Vendor specific messages
-- **Priority CAN** - `Auton Disable` messages
+- **CAN** - `Auton Disable` messages
 
 # Algorithm
 
