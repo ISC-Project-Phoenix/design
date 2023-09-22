@@ -16,7 +16,6 @@ Black = prod.launch.py
 
 Blue = data_collect.launch.py
 
-(TODO update after rest of nodes are done)
 ```mermaid
 stateDiagram-v2
     classDef common color:white,fill:red

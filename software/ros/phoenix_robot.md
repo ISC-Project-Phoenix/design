@@ -20,7 +20,6 @@ Purple = utilibot.launch.py
 
 Blue = common.launch.py
 
-(TODO impliment this in node docs)
 ```mermaid
 stateDiagram-v2
     classDef common color:white,fill:red
