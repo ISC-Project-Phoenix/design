@@ -42,7 +42,9 @@ stateDiagram-v2
     gz_bridge:::common --> kalman:::common: /odom_can
     kalman:::common --> gz_io_ros:::common: /odom
 
+    gz_bridge:::common --> obj_detector:::common: /camera/mid/depth
     gz_bridge:::common --> obj_detector:::common: /camera/mid/rgb
+    gz_bridge:::common --> obj_detector:::common: /camera/mid/rgb/camera_info
     obj_detector:::common --> obj_tracker:::common: /object_poses
 
     kalman:::common --> obj_tracker:::common: /odom
