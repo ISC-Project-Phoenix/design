@@ -49,7 +49,9 @@ stateDiagram-v2
     oak_d:::common --> kalman:::common: /camera/mid/imu
 
     %% new stuff
+    oak_d:::common --> obj_detector:::common: /camera/mid/depth
     oak_d:::common --> obj_detector:::common: /camera/mid/rgb
+    oak_d:::common --> obj_detector:::common: /camera/mid/rgb/camera_info
     obj_detector:::common --> obj_tracker:::common: /object_poses
 
     kalman:::common --> obj_tracker:::common: /odom

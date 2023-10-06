@@ -9,7 +9,7 @@ frames by the time between frames.
 ### Subscribes
 
 - `/object_poses` - Poses from detected objects
-- `/odom` - Filtered odometry used in state estimation
+- `/odom` - Filtered odometry used in state estimation (TODO may not need)
 
 ### Publishes
 
@@ -48,3 +48,8 @@ And for odom:
 - avg_displacement = sum / len(union)
 - estimated_velocity = avg_displacement / time delta from last run to current run
 - Publish that velocity as odom
+
+Alternatively, I believe we may be able to just get velocity from the kalman filters themselves.
+For this, the kalman filters can have 4 state variables, and 2 measurement variables.
+State is x, y, v_x, v_y and measurement is x, y. When we do predict cycles, we can output the
+velocity in odom.
