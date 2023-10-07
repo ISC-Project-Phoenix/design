@@ -25,6 +25,12 @@ location of that object.
 
 We may have to rectify the images with the wide angle lens first, but I'm not 100%.
 
+#### Masking
+
+Because AKS is still pretty vague with requirements, we should currently just attempt to detect orange objects.
+This should look something like finding orange pixels, and setting them white to mask our objects.
+See: https://medium.com/@sasasulakshi/opencv-object-masking-b3143e310d03
+
 #### Finding center of each object
 
 Given a mask, I think you can find the center of each object by first finding contours,
