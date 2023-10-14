@@ -64,4 +64,5 @@ stateDiagram-v2
     isc_sick:::common --> hybrid_pp:::common: /scan
 
     kalman:::common --> phnx_io_ros: /odom
+    kalman:::common --> hybrid_pp: /odom
 ```
