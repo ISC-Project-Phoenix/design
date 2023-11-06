@@ -39,7 +39,7 @@ in more detail:
    1. If tracker $i$'s missed frames is > some missed frames tolerence, then delete the tracker
 8. For each $ij$ where $i \not\in S$, correct track $i$'s kalman filter by treating the detection as a measurement
    1. Also set $i$'s missed frames counter to 0
-9. For each $j$ not in $A_i$ (new detections), create a new tracker and initalize with the current detection point
+9. For each $j$ not in $A_i - S$ (new detections), create a new tracker and initalize with the current detection point
 10. Publish the state of each tracker (either as just a pose, or with tracking id)
 
 ### References
