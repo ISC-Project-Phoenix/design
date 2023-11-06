@@ -23,33 +23,28 @@ frames by the time between frames.
 
 ### Tracking Algorithm
 
-We should look around and find some existing implementations from opencv.
+This algorithm will be inspired by existing CV MOT algorithms. Basically, we will have a Kalman filter for each track, where that
+Kalman filter has (x,y,z,vx,vy,vz) state variables and (x,y,z) measurement variables. For each cycle, we attempt to pair these
+tracks predictions with the detected objects, resulting in new measurements for the kalman filters. Poor fits or unpaired detections
+remove or add tracks respectively.
 
-Generally, the algorithm should look something like the following:
+in more detail:
+1. If there are no Kalman filters, initalize one for each detection
+2. Create set $P_i$ predictions by predicting all kalman filters, where $i$ is the id of the track
+3. Create cost matrix $C_ij$, where each $ij$ corresponds to the eucliden distence between track prediction $P_i$ and detection with index $j$
+4. Solve the assignment problem between tracks and points by finding the paring assignment that minimizes the cost (hungarian algorithm)
+5. Take the resulting assignment vector $A_i$, where the value of each index contains the $j$ that track $i$ is paired with
+   1. Note that, by the assignment problem, all tracks had to be paired with a point, even if not valid.
+7. For each $ij$ pairing where $C_ij > threshold$, increase the number of missed frames on tracker $i$ by 1. Mark these skipped trackers in set $S$. Note that $threshold$ is the distance value in meters that a track-detection pair must be under in order to be valid, because of 5.1
+   1. If tracker $i$'s missed frames is > some missed frames tolerence, then delete the tracker
+8. For each $ij$ where $i \not\in S$, correct track $i$'s kalman filter by treating the detection as a measurement
+   1. Also set $i$'s missed frames counter to 0
+9. For each $j$ not in $A_i$ (new detections), create a new tracker and initalize with the current detection point
+10. Publish the state of each tracker (either as just a pose, or with tracking id)
 
-- Set of tracks T
-- Input of poses P
-- For each Tr in T:
-  - Predict the next position of Tr using odom and basic particle motion (could also be kalman filters)
-  - Push this to array Tp
-- For each Pr in P:
-  - Find the closest point in Tp that is still under some threshold distance
-  - If such a point exists, update that track in T with the pose of Pr
-  - else, allocate a new ID to Pr, and add it as a new track to T
-- For each T that was not updated:
-  - deallocate the tracks ID, and remove from array
+### References
+https://github.com/mithundiddi/hungarian-algorithm-cpp
 
-And for odom:
-- Given the state of the tracks from the last run
-- And the updated tracks from this run
-- Find the union of these arrays, by track ID
-- For each track in union:
-  - sum += euclidean_distance(new_point, old_point)
-- avg_displacement = sum / len(union)
-- estimated_velocity = avg_displacement / time delta from last run to current run
-- Publish that velocity as odom
+https://github.com/srianant/kalman_filter_multi_object_tracking
 
-Alternatively, I believe we may be able to just get velocity from the kalman filters themselves.
-For this, the kalman filters can have 4 state variables, and 2 measurement variables.
-State is x, y, v_x, v_y and measurement is x, y. When we do predict cycles, we can output the
-velocity in odom.
+https://towardsdatascience.com/what-i-was-missing-while-using-the-kalman-filter-for-object-tracking-8e4c29f6b795
