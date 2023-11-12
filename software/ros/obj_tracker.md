@@ -3,23 +3,15 @@
 ## Summary
 
 This node takes arrays of Poses and tracks them over time, assigning IDs. This will be used to track the detections from
-obj_detection. During this process, it also derives a visual odometry source by dividing the displacement of IDs between
-frames by the time between frames. 
+obj_detection, both smoothing their output and providing persesitence for when detections flicker in and out.
 
 ### Subscribes
 
 - `/object_poses` - Poses from detected objects
-- `/odom` - Filtered odometry used in state estimation (TODO may not need)
 
 ### Publishes
 
-- `/odom_tracker` - Velocity odom generated in the tracking process
 - `/tracks` - Tracks generated. Note that these will be in the frame of the poses from `/object_poses`
-
-### Messages
-
-- `Track`
-  - Message of `int ID` and `Pose pose`
 
 ### Tracking Algorithm
 
@@ -35,11 +27,12 @@ in more detail:
 4. Solve the assignment problem between tracks and points by finding the paring assignment that minimizes the cost (hungarian algorithm)
 5. Take the resulting assignment vector $A_i$, where the value of each index contains the $j$ that track $i$ is paired with
    1. Note that, by the assignment problem, all tracks had to be paired with a point, even if not valid.
-7. For each $ij$ pairing where $C_ij > threshold$, increase the number of missed frames on tracker $i$ by 1. Mark these skipped trackers in set $S$. Note that $threshold$ is the distance value in meters that a track-detection pair must be under in order to be valid, because of 5.1
+   2. For non-square matricies, $A_i$ will be -1 for trackers who were not paired to any detection. When there are more detections then trackers, the non-paired detections will simply not appear in $A_i$
+7. For each $ij$ pairing where $C_ij > threshold$ or $A_i < 0$, increase the number of missed frames on tracker $i$ by 1. Mark these skipped trackers in set $S$. Note that $threshold$ is the distance value in meters that a track-detection pair must be under in order to be valid, because of 5.1
    1. If tracker $i$'s missed frames is > some missed frames tolerence, then delete the tracker
 8. For each $ij$ where $i \not\in S$, correct track $i$'s kalman filter by treating the detection as a measurement
    1. Also set $i$'s missed frames counter to 0
-9. For each $j$ not in $A_i - S$ (new detections), create a new tracker and initalize with the current detection point
+9. For each $j$ not in $A_i$ (new detections), create a new tracker and initalize with the current detection point
 10. Publish the state of each tracker (either as just a pose, or with tracking id)
 
 ### References
