@@ -33,4 +33,4 @@ in state, rather this process is done for each tick, so we will always use the c
 
 By the power of physics 1, we can determine the max speed for a turn with:
 `v = sqrt(static_friction * gravity * turn_radius)`
-For this, we will need to calculate the static friction of our tires.
+For this, we will need to calculate the static friction of our tires. After consulting combustion, a value of 1 should be accurate.
