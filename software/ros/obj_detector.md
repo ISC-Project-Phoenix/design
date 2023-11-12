@@ -19,19 +19,29 @@ a Pose array as a generic interface for detections.
 ### Detection Algorithm
 
 The detector is split into two halves: a frontend, and a backend. The frontend takes an RGB image and finds the
-center points of objects using masking, morphology, contours, and more. The Backend then takes these center points
-and then finds the real world (x, y, z) position of the object using camera intrinsics and depth images.
+center points of objects using masking, morphology, contours, pixel thresholds and more. The Backend then takes these center points
+and then finds the real world (x, y, z) position of jthe object using camera intrinsics and depth images.
 
 This two stage design allows us to provide many kinds of object detectors by just changing out the frontend, and
 reusing the rest of the infrastructure. This is critical to allowing us to test with cones or markers for comp.
 
 #### Masking
 
-TODO
+1. Lighten the shadows on the RGB image using gamma.
+2. Converent the gamma corrected RGB image to HSV.
+3. Take the HSV image, set an uppper and lower bound to mask orange pixels and apply.
+4. Define the morphological variable. Using this variable the dilate operation 
+    is then used to emphasize masked objects. 
 
 #### Finding center of each object
 
-TODO
+1. Create contours of orange objects in the mask using the findContours OpenCV operation
+2. Set a pixel threshold param to reject small masked contours from returing its center 
+    if's pixel count is less than the set value.
+3. Set a dimensions param to rejects masked contours if the aspect ratio and ap ratio 
+    (area_perimeter_ratio) of an object is within a user set range.
+5. Find image moments then calculate the center of each contour.
+6. Center point is returned into a vector if the contour is not rejected by params.
 
 #### Finding object location from pixels
 
