@@ -47,9 +47,7 @@ stateDiagram-v2
     gz_bridge:::common --> obj_detector:::common: /camera/mid/rgb/camera_info
     obj_detector:::common --> obj_tracker:::common: /object_poses
 
-    kalman:::common --> obj_tracker:::common: /odom
     kalman:::common --> hybrid_pp:::common: /odom
-    obj_tracker:::common --> kalman:::common: /odom_tracker
     obj_tracker:::common --> obj_planner:::common: /tracks
 
     obj_planner:::common --> hybrid_pp:::common: /path
