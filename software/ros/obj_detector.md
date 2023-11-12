@@ -14,39 +14,37 @@ a Pose array as a generic interface for detections.
 ### Publishes
 
 - `/object_poses` - An array of Poses, representing the centroids of each detected object in free space. Note that these
-objects will be in the frame of the camera. 
+  objects will be in the frame of the camera.
 
 ### Detection Algorithm
 
-While it depends on the exact object we use, I would first attempt to segment the objects into masks, by some classic
-CV detection mechanism. Ex. colors combined with shape and reflectivity. Once these are detected, find the center weighted
-point of each objects mask. Finally, find the location of that point in the depth image, and use that depth data as the
-location of that object. 
+The detector is split into two halves: a frontend, and a backend. The frontend takes an RGB image and finds the
+center points of objects using masking, morphology, contours, and more. The Backend then takes these center points
+and then finds the real world (x, y, z) position of the object using camera intrinsics and depth images.
 
-We may have to rectify the images with the wide angle lens first, but I'm not 100%.
+This two stage design allows us to provide many kinds of object detectors by just changing out the frontend, and
+reusing the rest of the infrastructure. This is critical to allowing us to test with cones or markers for comp.
 
 #### Masking
 
-Because AKS is still pretty vague with requirements, we should currently just attempt to detect orange objects.
-This should look something like finding orange pixels, and setting them white to mask our objects.
-See: https://medium.com/@sasasulakshi/opencv-object-masking-b3143e310d03
+TODO
 
 #### Finding center of each object
 
-Given a mask, I think you can find the center of each object by first finding contours,
-then using functions for contours to find the center of each. You may also be able to
-do some filtering here for objects that are unlike ours in shape or size.
+TODO
 
 #### Finding object location from pixels
 
-To find the position of the object IRL from a pixel, we use fancy projection math. Ros has a package for this called
-image_geometry that will be very useful. This uses CameraInfo messages for metadata. Given these:
-1. call `PinholeCameraModel::projectPixelTo3dRay` with the pixel coordinates to get a quaternion rotating a ray towards the pixel
-2. convert that quaternion to RPY using TF convert quat to euler
-3. use:```
-   x = depth * sin(pitch) * cos(yaw);
-   y = depth * sin(pitch) * sin(yaw);
-   z = depth * cos(pitch);```
-   1. Test this, things may be shuffled around because of ROS coordinate systems
-4. This point is in the cameras frame, so we want to transform this to base_footprint
+To recover the 3D position of the object W.R.T. The camera, we can utilize the camera intrinsics alongside depth data:
 
+1. Project object center pixel from image to pixel space using $K^{-1}$. This gives us a ray pointing in the direction
+   of the object in camera space
+2. Find the depth of the object by checking that pixel in the depth image
+3. If depth is $> 10m$ (over sensor max) or $<= 0$, skip this object
+4. By treating the ray as a vector, we can find the point in camera space by simply adjusting the magnitude of the ray
+   to the depth. This is done with: $point = \frac{depth}{\left \| ray \right \|} * ray$.
+5. Project this point to "World" space (really just WRT the camera) by rotating it from camera space coordinates to ROS
+   coordinates. This is done by rotating roll $-pi/2$ and yaw $-pi/2$.
+
+This algorithm works very well, but is vulnerable to noise in the depth data. This will need to be filtered by tracking
+further down the pipeline.
