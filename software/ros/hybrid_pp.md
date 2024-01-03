@@ -31,12 +31,7 @@ only off its subscriptions.
 
 ### Algorithm
 
-Implement traditional pure pursuit as
-in https://thomasfermi.github.io/Algorithms-for-Automated-Driving/Control/PurePursuit.html
-. For each command this produces, run the [AEB Algorithm](../embed/AEB.md) with this command to see if we will collide
-with a scan. If this occurs, then switch to an alternative algorithm to move around the object (TBD, tinykart based?).
-We don't store this
-in state, rather this process is done for each tick, so we will always use the correct approach at any given time.
+Currently we take in the path from obj_planner and create a spline from the list of points. Then based off our current speed we calculate the look ahead distance which is used to check the point of intersection infront of us along the spline. That point of intersection then becomes our target point to which we calculate our steering angle and command velocity. Currently no implementation of an obstical avoidance algorithm, but there are planes to use the [AEB Algorithm](../embed/AEB.md).
 
 #### Velocity determination
 
