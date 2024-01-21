@@ -2,10 +2,9 @@
 
 This package contains launch files for running phoenix IRL.
 
-there are three main launch files:
+there are two main launch files:
 
 - prod.launch.py: Runs the production version of phoenix
-- data_collect.launch.py: Runs phoenix in data collection mode, configuring data_logger alongside prod. (TODO impl)
 - common.launch.py: Launch file that launches nodes common between the above two files
 - ultilibot.launch.py: Launch file used on a remote computer networked to the kart. Launches
 teleop nodes.
@@ -28,7 +27,6 @@ stateDiagram-v2
     classDef util color:white,fill:purple
 
     %% Hardware interfaces
-    oak_d:::common --> data_logger:::data: /camera/mid/rgb
     Can --> phnx_io_ros:::common: Encoder, Estop state
     phnx_io_ros:::common --> Can: Actuation commands
     
@@ -40,19 +38,23 @@ stateDiagram-v2
     phnx_io_ros:::common --> robot_state_controller:::common: /robot/set_state
     robot_state_controller:::common --> drive_mode_switch:::common: /robot/state
 
-    %% logging
-    phnx_io_ros:::common --> data_logger:::data: /odom_ack
-    data_logger:::data --> disk: CSVs and images
-
     %% Localisation
     phnx_io_ros:::common --> kalman:::common: /odom_can
-    oak_d:::common --> kalman:::common: /camera/mid/imu
+    oak_d_l:::common --> kalman:::common: /camera/left/imu
+    oak_d_r:::common --> kalman:::common: /camera/right/imu
 
     %% new stuff
-    oak_d:::common --> obj_detector:::common: /camera/mid/depth
-    oak_d:::common --> obj_detector:::common: /camera/mid/rgb
-    oak_d:::common --> obj_detector:::common: /camera/mid/rgb/camera_info
-    obj_detector:::common --> obj_tracker:::common: /object_poses
+    oak_d_l:::common --> obj_detector1:::common: /camera/left/depth
+    oak_d_l:::common --> obj_detector1:::common: /camera/left/rgb
+    oak_d_l:::common --> obj_detector1:::common: /camera/left/rgb/camera_info
+    obj_detector1:::common --> detection_cat:::common: /object_poses/left
+    
+    oak_d_r:::common --> obj_detector2:::common: /camera/right/depth
+    oak_d_r:::common --> obj_detector2:::common: /camera/right/rgb
+    oak_d_r:::common --> obj_detector2:::common: /camera/right/rgb/camera_info
+    obj_detector2:::common --> detection_cat:::common: /object_poses/right
+    
+    detection_cat:::common --> obj_tracker:::common: /object_poses
 
     obj_tracker:::common --> obj_planner:::common: /tracks
 
