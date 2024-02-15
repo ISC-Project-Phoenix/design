@@ -26,6 +26,7 @@ only off its subscriptions.
 - `rear_axle_frame`: A string used for the odom to rear_axle transformation.
 - `max_speed`:  Max possible speed of phoenix in meters per second.
 - `wheel_base`: The wheelbase of phoenix in meters.
+- `avoidance _radius`: The minimus distance the path can be to any laser scan.
 - `gravity_constant`: The constant acceleration due to gravity.
 - `debug`: Debug flag to determine if we want to publish the visualization markers.
 
