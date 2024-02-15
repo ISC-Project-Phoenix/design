@@ -31,7 +31,7 @@ only off its subscriptions.
 
 ### Algorithm
 
-Currently we take in the path from obj_planner and create a spline from the list of points. Then based off our current speed we calculate the look ahead distance which is used to check the point of intersection infront of us along the spline. That point of intersection then becomes our target point to which we calculate our steering angle and command velocity. Currently no implementation of an obstical avoidance algorithm, but there are planes to use the [AEB Algorithm](../embed/AEB.md).
+Currently we take in the path from obj_planner and create a spline from the list of points. Then based off our current speed we calculate the look ahead distance which is used to check the point of intersection infront of us along the spline. That point of intersection then becomes our target point to which we calculate our steering angle and command velocity. Upon reciving the path message, we manipulate each point to move around laser scans creating a curve around obstacles.  
 
 #### Velocity determination
 
