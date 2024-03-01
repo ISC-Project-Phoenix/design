@@ -14,7 +14,7 @@ The following are all CAN2.0B extended identifiers. There exists no remote or er
 - (0x0000006) **Set Speed**
 - (0x0000007) **Encoder Count**
 - (0x0000008) **Training Mode**
-- (0x0000008) **Auton Enable**
+- (0x0000009) **Auton Enable**
 
 ## Master control
 
