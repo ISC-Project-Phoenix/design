@@ -14,12 +14,15 @@ The following are all CAN2.0B extended identifiers. There exists no remote or er
 - (0x0000006) **Set Speed**
 - (0x0000007) **Encoder Count**
 - (0x0000008) **Training Mode**
+- (0x0000008) **Auton Enable**
 
 ## Master control
 
 - **Auton Disable** - Tells the interface board to stop sending messages from ROS to the CAN network. 
-The interface board should send a message to the PC, where ROS will state transition to teleop. There will be no auton enable 
-message, rather you will need to toggle auton via a physical switch. 
+The interface board should send a message to the PC, where ROS will state transition to teleop.
+
+- **Auton Enable** - Tells the interface board to transition ROS into ACTIVE. This allows the system to be teleoped,
+or transition back into auton if the enable button is pressed.
 
 - **Training Mode** - Engages training mode. Any node that receives this should being to relay data on the CAN bus for data collection,
 if applicable. There is no way to exit training mode, rather you power cycle CAN.

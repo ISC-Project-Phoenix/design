@@ -51,20 +51,6 @@ These three threads communicate in a few ways, which means we have to consider r
 
 ### PID Algorithm
 
-We control the speed of the bot using two separate PID loops, one for throttle, and one for brakes. Only one of these
-should be active at a time. This larger PID loop takes feedback from the Kalman filter, which means that our **control
-rate is directly tied to the kalman filter**.
-
-For each update:
-
-- Calc error
-- If error is negative and under some threshold
-    - Update brake PID
-- Else if error is negative
-    - Disable all PID loops, and just coast
-- Else if error is positive
-    - Update throttle PID
-- Return the calculated PID value, as well as the actuator to apply it to
-
-Downstream, the code is expected to release the actuator that is not being currently used, and set the one chosen to
-the control output.
+The speed of the bot is currently controlled with just the motor, although the brake is available for future work.
+This is done in a simple PID loop, ticking at the speed of odom. This loop must be set to 0 whenever the kart is killed,
+else integral windup will lead to the kart blasting off when enabled.

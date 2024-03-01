@@ -9,6 +9,7 @@ in the ECU network. It communicates over UART.
 ## Inputs
 - **UART from PC** - Over the virtual COM port on the usb
 - **CAN** - Messages from CAN
+- **Estop Tap** - Pin that is set high when estop is not enabled, and pulled low when the kart is killed.
 
 ## Outputs
 - **UART to PC** - Sends select CAN messages to the PC. Currently these are all perception
@@ -25,19 +26,12 @@ These are all in the same format as described in the can messages.
 
 ### From CAN
 - Encoder
-- Auton Toggle
 
-## Algorithm
+## Estop
 
-## Functional Requirements
+When the estop is active (falling edge), the board will send a killed message to ROS. This will then transition ROS
+into the killed state, putting the kart in teleop. This just allows us to better model the state of the hardware in
+ROS, allowing us to do things such as stop PID loops. 
 
-- REQ1: Steering, throttle, and break messages from the PC must be passed to the CAN bus.
-- REQ2: Encoder messages on the CAN bus must be sent to the PC.
-- REQ3: The ECU must process messages in full duplex.
-- REQ4: This ECU should have a failsafe such that, if this ECU stops processing, the Estop will be fired.
-- REQ5: On `Auton Disable` CAN message, stop acting on messages from the PC. Send a message to the PC, where ROS will then state transition to inactive. 
-This should be stored as internal state.
-- REQ6: On the Auton switch being toggled, stop acting on messages from the PC. Send a message to the PC, where ROS will then state transition to inactive. This should be stored as internal state, shared with REQ5.
-- REQ7: On `Training mode` message, relay `Set Throttle`, `Set Brake`, `Set Steer`, `Encoder Count` to the PC when received.
-- REQ8: This ECU should be able to read the current status of the hardware pause and estop by reading connected pins.
-- REQ9: If pause pin or estop pin go high, send message to the PC, where ROS will then transition system state to inactive.
+When the estop is disabled (rising edge), the board will send an enabled message to ROS. This will transition ROS
+to active, allowing for teleop or a transition back to auton.
