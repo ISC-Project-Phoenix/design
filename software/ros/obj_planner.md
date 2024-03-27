@@ -2,8 +2,10 @@
 
 ## Summary
 
-This node plans a path through the center of tracked points. The general idea is to use the tracks as bounds of the track,
-and so stay on track by creating paths that consist of points at the midpoint between tracks on alternating sides of the track.
+This node plans a path through the center of tracked points. The general idea is to use the tracks as bounds of the
+track,
+and so stay on track by creating paths that consist of points at the midpoint between tracks on alternating sides of the
+track.
 
 A benefit of this approach is that planning is local and very fast, which allows it to be used without localisation.
 
@@ -17,29 +19,35 @@ A benefit of this approach is that planning is local and very fast, which allows
 
 ### Algorithm
 
-This planner will likely have a huge amount of edge cases, such as when the sides are not balanced. As well, simply finding
-"The point on the other side of the track" needs to be expressed mathematically, which requires some finnese.
-In addition, the algorithm should only replan when a new tracks ID is published. This should help with the case
-where a bunch of tracks are lost because we lose side of part of the track, but we still want to keep moving forward
-regardless. Once the tracks come back in the form of new ids, we replan.
+The planner can largely be split into a frontend and backend. The frontend takes tracks and classifies them as being to
+the left or right of the track (harder than it sounds!). The backend takes right-left classifications and creates a
+path.
 
-Rough general planning Algo:
-- Transform all tracks into base_link (relative to base of kart)
-- Segment points into right and left side by the fact that points to the right of the kart in base_link will be 
--y and to the left of the kart will be +y
-- Sort both sides by ascending x distance 
-- Create a dictionary of left tracks to right tracks
-- For each left track
-  - For each right track
-    - If the delta between the left x and right x is under some threshold, add left->right track into the map
-    - If the left track was already a key, then replace the value only if the new right track x is closer than the old one
-- Order the map by ascending left x again
-- for each map entry, find the midpoint of the two points
-  - Transform this midpoint from base_link->odom (freeze the points so when the kart moves the points don't)
-  - Save this point as a Pose in an array
-- Publish the pose array as a Path
+The current frontend implementation is based on the idea of treating tracks as data-points, and drawing a convex hull
+around them.
 
-Now the above algorithm will not handle corners, so it needs some work. Regardless, I think this is a strong starting 
-point. Consider for example clustering the points by x distance, then differentiating left vs right relative to only
-points in the same cluster.
+1. Generate convex hull around tracks as points
+2. Determine if we are in a left, right, or straight turning scenario
+    1. Currently done by a RANASC of the points, finding a line of best fit. The angle of this line
+       wrt. the ROS Y axis is then analysed to see if the points trend right or left.
+3. If straight, then just trivially classify tracks into left and right via the Y coordinate
+4. If turning, then walk the edges of the convex hull until an angle is found that is greater than
+   some threshold. This abnormally large angle indicates that we have jumped from the outer edge of the turn to the
+   inner edge on the other side of the track.
+5. Consider all tracks that are some small distance from the segments traversed to find the outside edge of the turn
+   to be our right/left side of the track, depending on the scenario.
+    1. Ex. for left turn, these points would be classified as to the right of the track
+6. Classify all remaining points as being on the opposite side of the track to step 5
 
+Our backend implementation is considerably simpler. It simply takes these right left sets, and creates
+a path by pairing them and finding midpoints.
+
+1. Sort all points by X axis, as the frontend does not deliver them in order
+2. Find the side of the road with fewer points
+3. For each point on the smaller side
+    1. Find the closest point on the other side of the road
+    2. Save these two points as a pair
+4. For each pair
+    1. Find the midpoint between these two points
+    2. Append this midpoint to the path as a target point
+5. Transform the path into odom

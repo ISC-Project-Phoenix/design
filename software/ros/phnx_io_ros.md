@@ -11,6 +11,13 @@ This node will then pass this set speed to a control loop, which will run in a b
 ticked
 by odom to close the loop, producing both throttle and brake commands on the bus as needed to meet the set speed.
 
+Currently, this node also connects to the roboteq motor controller directly, bypassing the bus. Messages are still sent
+on the bus, however they are not currently used for throttle.
+
+This node is also the source of estop state in ROS, reacting to detected state changes from the bus and cycling both its
+own state (stopping the speed loop), and also signaling robot state controller, and thus the rest of the system. It
+also handles unestopping, which involves synchronizing the system with hardware and state transitioning.
+
 See [the interface docs for more info](../embed/Interface-ECU.md).
 
 Also see [gz_io_ros](gz_io_ros.md) for the fake of this node used in sim.
@@ -54,3 +61,10 @@ These three threads communicate in a few ways, which means we have to consider r
 The speed of the bot is currently controlled with just the motor, although the brake is available for future work.
 This is done in a simple PID loop, ticking at the speed of odom. This loop must be set to 0 whenever the kart is killed,
 else integral windup will lead to the kart blasting off when enabled.
+
+### Roboteq
+
+A connection is made to the roboteq motor controller automatically by searching /dev/serial/by-id. This means that
+the controller just needs to be connected over a direct usb connection, but an RS232 adapter should also work. Our
+interface to the motor controller is quite simple, primarily just sending blind power commands from the speed control
+loop. 
