@@ -2,22 +2,45 @@
 
 ## Summary
 
-This node will detect the objects used to line the track at AKS. This item is TBD. Because of this vagueness, we use
+NEW: This node will detect white lane lines on the track at AKS. This item is TBD. Because of this vagueness, we use 
+a Pose vector as a generic interface for detections
+
+
+OLD: This node will detect the objects used to line the track at AKS. This item is TBD. Because of this vagueness, we use
 a Pose array as a generic interface for detections.
 
 ### Subscribes
 
+NEW:
+- `/camera/mid/rgb` - RGB images
+- `/camera/mid/rgb/camera_info` - Camera intrinsics
+
+OLD:
 - `/camera/mid/rgb` - RGB images
 - `/camera/mid/depth` - Depth images
 - `/camera/mid/rgb/camera_info` - Camera intrinsics
 
 ### Publishes
 
+NEW:
+- `/object_poses` - A vector of points, representing a continuous line up to a distance threshold. 
+
+OLD:
 - `/object_poses` - An array of Poses, representing the centroids of each detected object in free space. Note that these
   objects will be in the frame of the camera.
 
 ### Detection Algorithm
 
+NEW:
+The detector is split into two halves: a frontend, and a backend. The frontend takes an RGB image, isloates the 
+lane line and creates a vector of points along the line using masking, pixel thresholds, location thresholds and more. 
+The backend then takes the sampled points along the lane line and then finds the real world (x, y, z) position of the object using camera instrinsics.
+
+This two stage design allows us to provide many kinds of object detectors by just changing out the frontend, and
+reusing the rest of the infrastructure.
+
+
+OLD:
 The detector is split into two halves: a frontend, and a backend. The frontend takes an RGB image and finds the
 center points of objects using masking, morphology, contours, pixel thresholds and more. The Backend then takes these center points
 and then finds the real world (x, y, z) position of jthe object using camera intrinsics and depth images.
@@ -27,14 +50,26 @@ reusing the rest of the infrastructure. This is critical to allowing us to test 
 
 #### Masking
 
+NEW:
+TODO: Method
+1. 
+2. 
+
+
+OLD:
 1. Lighten the shadows on the RGB image using gamma.
 2. Converent the gamma corrected RGB image to HSV.
 3. Take the HSV image, set an uppper and lower bound to mask orange pixels and apply.
 4. Define the morphological variable. Using this variable the dilate operation 
     is then used to emphasize masked objects. 
 
-#### Finding center of each object
 
+#### Find points along lane linee
+TODO:
+
+
+# BELOW NOT USED IN NEW METHOD 
+#### Finding center of each object
 1. Create contours of orange objects in the mask using the findContours OpenCV operation
 2. Set a pixel threshold param to reject small masked contours from returing its center 
     if's pixel count is less than the set value.
@@ -44,6 +79,8 @@ reusing the rest of the infrastructure. This is critical to allowing us to test 
 6. Center point is returned into a vector if the contour is not rejected by params.
 
 #### Finding object location from pixels
+
+OLD / NEW: Method should be the same or very similar
 
 To recover the 3D position of the object W.R.T. The camera, we can utilize the camera intrinsics alongside depth data:
 
