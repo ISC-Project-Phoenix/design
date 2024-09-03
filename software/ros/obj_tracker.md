@@ -1,5 +1,21 @@
 # obj_tracker
 
+
+
+NEW:
+**TRACKER WILL BE REMOVED IN THE NEW DESIGN**
+**WHY?:**
+The tracker is used on Poses of cones with the use of depth data that are tracked over time . Cones are gone, replacing them are solid white lane lines,
+depth data is not used and therefore the tracker is no longer useable for the design we have in mind.
+
+
+
+
+
+
+
+OLD BELOW
+
 ## Summary
 
 This node takes arrays of Poses and tracks them over time, assigning IDs. This will be used to track the detections from
