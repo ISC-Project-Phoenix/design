@@ -2,6 +2,8 @@
 
 ## Summary
 
+SAME:
+
 This node plans a path through the center of tracked points. The general idea is to use the tracks as bounds of the
 track,
 and so stay on track by creating paths that consist of points at the midpoint between tracks on alternating sides of the
@@ -11,13 +13,18 @@ A benefit of this approach is that planning is local and very fast, which allows
 
 ### Subscribes
 
+NEW:
+- `/obj_poses` - A vector of points in 3D space along white lane lines 
+
+OLD:
 - `/tracks` - Tracked objects. Note that these are in some frame that is attached to base_link.
 
 ### Publishes
 
+SAME:
 - `/path` - a nav_msgs Path to follow. These will be in our odom frame.
 
-### Algorithm
+### Algorithmj
 
 The planner can largely be split into a frontend and backend. The frontend takes tracks and classifies them as being to
 the left or right of the track (harder than it sounds!). The backend takes right-left classifications and creates a
