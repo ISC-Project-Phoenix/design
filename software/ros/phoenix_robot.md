@@ -44,19 +44,15 @@ stateDiagram-v2
     oak_d_r:::common --> kalman:::common: /camera/right/imu
 
     %% new stuff
-    oak_d_l:::common --> obj_detector1:::common: /camera/left/depth
     oak_d_l:::common --> obj_detector1:::common: /camera/left/rgb
     oak_d_l:::common --> obj_detector1:::common: /camera/left/rgb/camera_info
     obj_detector1:::common --> detection_cat:::common: /object_poses/left
     
-    oak_d_r:::common --> obj_detector2:::common: /camera/right/depth
     oak_d_r:::common --> obj_detector2:::common: /camera/right/rgb
     oak_d_r:::common --> obj_detector2:::common: /camera/right/rgb/camera_info
     obj_detector2:::common --> detection_cat:::common: /object_poses/right
     
-    detection_cat:::common --> obj_tracker:::common: /object_poses
-
-    obj_tracker:::common --> obj_planner:::common: /tracks
+    detection_cat:::common --> obj_planner:::common: /object_poses
 
     obj_planner:::common --> hybrid_pp:::common: /path
     hybrid_pp:::common --> drive_mode_switch: /nav_ack_vel
