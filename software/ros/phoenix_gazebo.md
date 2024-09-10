@@ -34,17 +34,14 @@ stateDiagram-v2
     webots_ros2_driver:::common --> kalman:::common: /camera/left/imu
     webots_ros2_driver:::common --> kalman:::common: /camera/right/imu
     webots_ros2_driver:::common --> kalman:::common: /odom_can
-    webots_ros2_driver:::common --> obj_detector1:::common: /camera/left/depth/image
     webots_ros2_driver:::common --> obj_detector1:::common: /camera/left/rgb/image_color
     webots_ros2_driver:::common --> obj_detector1:::common: /camera/left/rgb/camera_info
-    webots_ros2_driver:::common --> obj_detector2:::common: /camera/right/depth/image
     webots_ros2_driver:::common --> obj_detector2:::common: /camera/right/rgb/image_color
     webots_ros2_driver:::common --> obj_detector2:::common: /camera/right/rgb/camera_info
     obj_detector2:::common --> detection_cat:::common: /object_poses/right
     obj_detector1:::common --> detection_cat:::common: /object_poses/left
-    detection_cat:::common --> obj_tracker:::common: /object_poses
+    detection_cat:::common --> obj_planner:::common: /object_poses
     kalman:::common --> hybrid_pp:::common: /odom
-    obj_tracker:::common --> obj_planner:::common: /tracks
     obj_planner:::common --> hybrid_pp:::common: /path
     hybrid_pp:::common --> drive_mode_switch: /nav_ack_vel
     webots_ros2_driver:::common --> hybrid_pp:::common: /scan
