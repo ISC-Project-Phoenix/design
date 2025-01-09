@@ -2,87 +2,42 @@
 
 ## Summary
 
-NEW: This node will detect white lane lines on the track at AKS. This item is TBD. Because of this vagueness, we use 
-a Pose vector as a generic interface for detections
-
-
-OLD: This node will detect the objects used to line the track at AKS. This item is TBD. Because of this vagueness, we use
-a Pose array as a generic interface for detections.
+This node will detect white lane lines on the track at AKS. Detections will be stored as 
+2nd degree polynomials in a vector in pixel space and translated to real space from camera space. Using a vector allows for 
+different degree polynomials to be used in the future if desired.
 
 ### Subscribes
 
-NEW:
 - `/camera/mid/rgb` - RGB images
-- `/camera/mid/rgb/camera_info` - Camera intrinsics
-
-OLD:
-- `/camera/mid/rgb` - RGB images
-- `/camera/mid/depth` - Depth images
 - `/camera/mid/rgb/camera_info` - Camera intrinsics
 
 ### Publishes
 
-NEW:
-- `/object_poses` - A vector of points, representing a continuous line up to a distance threshold. 
-
-OLD:
-- `/object_poses` - An array of Poses, representing the centroids of each detected object in free space. Note that these
-  objects will be in the frame of the camera.
+- `/object_poses` - A vector of integers that represents a 2D polynomial in real space. 
 
 ### Detection Algorithm
 
-NEW:
 The detector is split into two halves: a frontend, and a backend. The frontend takes an RGB image, isloates the 
-lane line and creates a vector of points along the line using masking, pixel thresholds, location thresholds and more. 
+lane line and creates a vector of elements (3 variables assuming 2nd degree poly) that represent the line as a polynomial, location thresholds and more. 
 The backend then takes the sampled points along the lane line and then finds the real world (x, y, z) position of the object using camera instrinsics.
 
-This two stage design allows us to provide many kinds of object detectors by just changing out the frontend, and
-reusing the rest of the infrastructure.
-
-
-OLD:
-The detector is split into two halves: a frontend, and a backend. The frontend takes an RGB image and finds the
-center points of objects using masking, morphology, contours, pixel thresholds and more. The Backend then takes these center points
-and then finds the real world (x, y, z) position of jthe object using camera intrinsics and depth images.
-
-This two stage design allows us to provide many kinds of object detectors by just changing out the frontend, and
-reusing the rest of the infrastructure. This is critical to allowing us to test with cones or markers for comp.
+This two stage design allows us to provide different kinds of line detection algorithms or methods by just changing 
+out the frontend, and reusing the rest of the infrastructure.
 
 #### Masking
 
-NEW:
 TODO: Method
 1. 
 2. 
 
-
-OLD:
-1. Lighten the shadows on the RGB image using gamma.
-2. Converent the gamma corrected RGB image to HSV.
-3. Take the HSV image, set an uppper and lower bound to mask orange pixels and apply.
-4. Define the morphological variable. Using this variable the dilate operation 
-    is then used to emphasize masked objects. 
-
-
-#### Find points along lane linee
+#### Find polynomial
 TODO:
-
-
-# BELOW NOT USED IN NEW METHOD 
-#### Finding center of each object
-1. Create contours of orange objects in the mask using the findContours OpenCV operation
-2. Set a pixel threshold param to reject small masked contours from returing its center 
-    if's pixel count is less than the set value.
-3. Set a dimensions param to rejects masked contours if the aspect ratio and ap ratio 
-    (area_perimeter_ratio) of an object is within a user set range.
-5. Find image moments then calculate the center of each contour.
-6. Center point is returned into a vector if the contour is not rejected by params.
 
 #### Finding object location from pixels
 
-OLD / NEW: Method should be the same or very similar
+TODO
 
-To recover the 3D position of the object W.R.T. The camera, we can utilize the camera intrinsics alongside depth data:
+To recover the 3D position of the object W.R.T. The camera, we can utilize the camera intrinsics alongside calculated depth data:
 
 1. Project object center pixel from image to pixel space using $K^{-1}$. This gives us a ray pointing in the direction
    of the object in camera space
@@ -92,6 +47,3 @@ To recover the 3D position of the object W.R.T. The camera, we can utilize the c
    to the depth. This is done with: $point = \frac{depth}{\left \| ray \right \|} * ray$.
 5. Project this point to "World" space (really just WRT the camera) by rotating it from camera space coordinates to ROS
    coordinates. This is done by rotating roll $-pi/2$ and yaw $-pi/2$.
-
-This algorithm works very well, but is vulnerable to noise in the depth data. This will need to be filtered by tracking
-further down the pipeline.

@@ -2,8 +2,11 @@
 
 ## Summary
 
-SAME:
 
+NEW:
+
+
+OLD:
 This node plans a path through the center of tracked points. The general idea is to use the tracks as bounds of the
 track,
 and so stay on track by creating paths that consist of points at the midpoint between tracks on alternating sides of the
@@ -13,11 +16,7 @@ A benefit of this approach is that planning is local and very fast, which allows
 
 ### Subscribes
 
-NEW:
-- `/obj_poses` - A vector of points in 3D space along white lane lines 
-
-OLD:
-- `/tracks` - Tracked objects. Note that these are in some frame that is attached to base_link.
+- `/obj_poses` - 2nd degree polynomails in real space. 
 
 ### Publishes
 
