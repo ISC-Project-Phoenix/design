@@ -26,7 +26,7 @@ stateDiagram-v2
     classDef prod color:white,fill:black
     classDef util color:white,fill:purple
     classDef ai color:white,fill:purple
-    classDef opencv color:white,fill:purple
+    classDef opencv color:white,fill:blue
 
     %% Hardware interfaces
     Can --> phnx_io_ros:::common: Encoder, Estop state
