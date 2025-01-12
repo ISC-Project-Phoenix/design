@@ -46,10 +46,10 @@ stateDiagram-v2
     
 
     %% new stuff
-    oak_d_m:::common --> obj_detector::::ai: /camera/mid/rgb
-    oak_d_m:::common --> obj_detector::::opencv: /camera/mid/rgb/camera_info
-    obj_detector::::ai --> obj_planner:::common: /object_poses
-    obj_detector::::opencv --> obj_planner:::common: /object_poses
+    oak_d_m:::common --> obj_detector:::ai: /camera/mid/rgb
+    oak_d_m:::common --> obj_detector:::opencv: /camera/mid/rgb/camera_info
+    obj_detector:::ai --> obj_planner:::common: /object_poses
+    obj_detector:::opencv --> obj_planner:::common: /object_poses
 
     obj_planner:::common --> hybrid_pp:::common: /path
     hybrid_pp:::common --> drive_mode_switch: /nav_ack_vel
