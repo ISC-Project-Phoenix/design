@@ -25,8 +25,8 @@ stateDiagram-v2
     classDef data color:white,fill:blue
     classDef prod color:white,fill:black
     classDef util color:white,fill:purple
-    classDef AI color:white,fill:purple
-    classDef openCV color:white,fill:purple
+    classDef ai color:white,fill:purple
+    classDef opencv color:white,fill:purple
 
     %% Hardware interfaces
     Can --> phnx_io_ros:::common: Encoder, Estop state
@@ -46,10 +46,10 @@ stateDiagram-v2
     
 
     %% new stuff
-    oak_d_m:::common --> obj_detector:::common: /camera/mid/rgb
-    oak_d_m:::common --> obj_detector:::common: /camera/mid/rgb/camera_info
-    obj_detector --> obj_planner:::common: /object_poses
-    obj_detector --> obj_planner:::common: /object_poses
+    oak_d_m:::common --> obj_detector::::ai: /camera/mid/rgb
+    oak_d_m:::common --> obj_detector::::opencv: /camera/mid/rgb/camera_info
+    obj_detector::::ai --> obj_planner:::common: /object_poses
+    obj_detector::::opencv --> obj_planner:::common: /object_poses
 
     obj_planner:::common --> hybrid_pp:::common: /path
     hybrid_pp:::common --> drive_mode_switch: /nav_ack_vel
