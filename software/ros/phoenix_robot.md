@@ -40,8 +40,8 @@ stateDiagram-v2
 
     %% Localisation
     phnx_io_ros:::common --> kalman:::common: /odom_can
-    oak_d_l:::common --> kalman:::common: /camera/left/imu
-    oak_d_r:::common --> kalman:::common: /camera/right/imu
+    oak_d_m:::common --> kalman:::common: /camera/mid/imu
+    
 
     %% new stuff
     oak_d_m:::common --> obj_detector:::common: /camera/mid/rgb
