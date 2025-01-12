@@ -15,9 +15,9 @@ Red = common.launch.py
 
 Black = prod.launch.py
 
-Purple = utilibot.launch.py
-
 Blue = common.launch.py
+
+Purple = common.launch.py
 
 ```mermaid
 stateDiagram-v2
@@ -47,7 +47,9 @@ stateDiagram-v2
 
     %% new stuff
     oak_d_m:::common --> obj_detector_ai:::ai: /camera/mid/rgb
+    oak_d_m:::common --> obj_detector_cv:::ai: /camera/mid/rgb
     oak_d_m:::common --> obj_detector_cv:::opencv: /camera/mid/rgb/camera_info
+    oak_d_m:::common --> obj_detector_ai:::opencv: /camera/mid/rgb/camera_info
     obj_detector_ai:::ai --> obj_planner:::common: /object_poses
     obj_detector_cv:::opencv --> obj_planner:::common: /object_poses
 
