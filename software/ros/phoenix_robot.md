@@ -32,7 +32,7 @@ stateDiagram-v2
     
     %% command controllers
     drive_mode_switch:::common --> phnx_io_ros:::common: /robot/ack_vel
-    logi_g29:::util --> drive_mode_switch:::common: /ack_vel
+    
     
     %% state control
     phnx_io_ros:::common --> robot_state_controller:::common: /robot/set_state
