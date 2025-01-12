@@ -2,9 +2,12 @@
 
 ## Summary
 
-This node will detect white lane lines on the track at AKS. Detections will be stored as 
-2nd degree polynomials in a vector in pixel space and translated to real space from camera space. Using a vector allows for 
-different degree polynomials to be used in the future if desired.
+This node will detect the lane on the track at AKS using 2 interchangable methods.
+
+The first method is done using OpenCV to detect white lane lines on the track. These detections are stored as 2nd degree polynomials in a vector that are translated to real space from camera space. This vector is published to the CV specific Planner
+
+The Second method is done using an AI model to detect the lane as a whole as a masked image. This image is then published to the AI specific Planner  
+
 
 ### Subscribes
 
@@ -13,16 +16,22 @@ different degree polynomials to be used in the future if desired.
 
 ### Publishes
 
-- `/object_poses` - A vector of integers that represents a 2D polynomial in real space. 
+- `/object_poses` - 
+                     If CV: A vector of integers that represents a 2D polynomial in real space.
+                     If AI: A masked image of the lane.
 
 ### Detection Algorithm
 
+For CV:
 The detector is split into two halves: a frontend, and a backend. The frontend takes an RGB image, isloates the 
 lane line and creates a vector of elements (3 variables assuming 2nd degree poly) that represent the line as a polynomial, location thresholds and more. 
 The backend then takes the sampled points along the lane line and then finds the real world (x, y, z) position of the object using camera instrinsics.
 
 This two stage design allows us to provide different kinds of line detection algorithms or methods by just changing 
 out the frontend, and reusing the rest of the infrastructure.
+
+For AI:
+TODO
 
 #### Masking
 
@@ -35,7 +44,7 @@ TODO:
 
 #### Finding object location from pixels
 
-TODO
+TODO:
 
 To recover the 3D position of the object W.R.T. The camera, we can utilize the camera intrinsics alongside calculated depth data:
 

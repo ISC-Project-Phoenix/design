@@ -2,48 +2,38 @@
 
 ## Summary
 
-
-NEW:
-
-
-OLD:
-This node plans a path through the center of tracked points. The general idea is to use the tracks as bounds of the
-track,
-and so stay on track by creating paths that consist of points at the midpoint between tracks on alternating sides of the
-track.
+This node will create a vector of points in the center of the track for the kart to follow. 
+There will be two methods for planning that match the two methods in the obj_detector. 
+The CV method:
+The AI method:
 
 A benefit of this approach is that planning is local and very fast, which allows it to be used without localisation.
 
 ### Subscribes
 
-- `/obj_poses` - 2nd degree polynomails in real space. 
+- `/obj_poses` - If CV: A vector of integers that represents a 2D polynomial in real space. 
+                 If AI: A masked image of the lane
 
 ### Publishes
 
-SAME:
 - `/path` - a nav_msgs Path to follow. These will be in our odom frame.
 
 ### Algorithmj
 
-The planner can largely be split into a frontend and backend. The frontend takes tracks and classifies them as being to
-the left or right of the track (harder than it sounds!). The backend takes right-left classifications and creates a
-path.
+The Planner can be split into 2 parts, the CV and AI algorithms held in separete folders and are selected based on the subscribed "obj_poses" data. 
 
-The current frontend implementation is based on the idea of treating tracks as data-points, and drawing a convex hull
-around them.
+CV:
+1. 
+2. 
+3. 
 
-1. Generate convex hull around tracks as points
-2. Determine if we are in a left, right, or straight turning scenario
-    1. Currently done by a RANASC of the points, finding a line of best fit. The angle of this line
-       wrt. the ROS Y axis is then analysed to see if the points trend right or left.
-3. If straight, then just trivially classify tracks into left and right via the Y coordinate
-4. If turning, then walk the edges of the convex hull until an angle is found that is greater than
-   some threshold. This abnormally large angle indicates that we have jumped from the outer edge of the turn to the
-   inner edge on the other side of the track.
-5. Consider all tracks that are some small distance from the segments traversed to find the outside edge of the turn
-   to be our right/left side of the track, depending on the scenario.
-    1. Ex. for left turn, these points would be classified as to the right of the track
-6. Classify all remaining points as being on the opposite side of the track to step 5
+AI:
+1. 
+2. 
+3. 
+
+
+
 
 Our backend implementation is considerably simpler. It simply takes these right left sets, and creates
 a path by pairing them and finding midpoints.
