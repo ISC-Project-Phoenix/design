@@ -17,6 +17,9 @@ Black = prod.launch.py
 
 Blue = data_collect.launch.py
 
+Purple = common.launch.py
+
+
 Note that webots_ros2_driver will appear in rqt as /Phoenix
 
 ```mermaid
@@ -24,6 +27,9 @@ stateDiagram-v2
     classDef common color: white, fill: red
     classDef data color: white, fill: blue
     classDef prod color: white, fill: black
+    classDef ai color:white,fill:purple
+    classDef opencv color:white,fill:blue
+
 %% Hardware interfaces
     Webots --> webots_ros2_driver:::common
     webots_ros2_driver:::common --> Webots
@@ -31,16 +37,17 @@ stateDiagram-v2
     drive_mode_switch:::common --> webots_ros2_driver:::common: /robot/ack_vel
     logi_g29:::common --> drive_mode_switch:::common: /ack_vel
 %% Gazebo sensors
-    webots_ros2_driver:::common --> kalman:::common: /camera/left/imu
-    webots_ros2_driver:::common --> kalman:::common: /camera/right/imu
+    webots_ros2_driver:::common --> kalman:::common: /camera/mid/imu
     webots_ros2_driver:::common --> kalman:::common: /odom_can
-    webots_ros2_driver:::common --> obj_detector1:::common: /camera/left/rgb/image_color
-    webots_ros2_driver:::common --> obj_detector1:::common: /camera/left/rgb/camera_info
-    webots_ros2_driver:::common --> obj_detector2:::common: /camera/right/rgb/image_color
-    webots_ros2_driver:::common --> obj_detector2:::common: /camera/right/rgb/camera_info
-    obj_detector2:::common --> detection_cat:::common: /object_poses/right
-    obj_detector1:::common --> detection_cat:::common: /object_poses/left
-    detection_cat:::common --> obj_planner:::common: /object_poses
+
+    webots_ros2_driver:::common --> obj_detector_ai:::ai: /camera/mid/rgb/image_color
+    webots_ros2_driver:::common --> obj_detector_cv:::ai: /camera/mid/rgb/camera_info
+    webots_ros2_driver:::common --> obj_detector_cv:::opencv: /camera/mid/rgb/image_color
+    webots_ros2_driver:::common --> obj_detector_ai:::opencv: /camera/mid/rgb/camera_info
+
+    obj_detector2:::common -->  obj_planner_ai:::ai /masked_img
+    obj_detector1:::common -->  obj_planner_cv:::opencv /poly
+
     kalman:::common --> hybrid_pp:::common: /odom
     obj_planner:::common --> hybrid_pp:::common: /path
     hybrid_pp:::common --> drive_mode_switch: /nav_ack_vel

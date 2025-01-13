@@ -50,8 +50,8 @@ stateDiagram-v2
     oak_d_m:::common --> obj_detector_cv:::ai: /camera/mid/rgb
     oak_d_m:::common --> obj_detector_cv:::opencv: /camera/mid/rgb/camera_info
     oak_d_m:::common --> obj_detector_ai:::opencv: /camera/mid/rgb/camera_info
-    obj_detector_ai:::ai --> obj_planner_ai:::common: /poly
-    obj_detector_cv:::opencv --> obj_planner_cv:::common: /masked_img
+    obj_detector_ai:::ai --> obj_planner_ai:::ai: /masked_img
+    obj_detector_cv:::opencv --> obj_planner_cv:::opencv: /poly
 
     obj_planner_ai:::ai --> hybrid_pp:::common: /path
     obj_planner_cv:::opencv --> hybrid_pp:::common: /path
