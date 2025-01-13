@@ -45,8 +45,8 @@ stateDiagram-v2
     webots_ros2_driver:::common --> obj_detector_cv:::opencv: /camera/mid/rgb/image_color
     webots_ros2_driver:::common --> obj_detector_ai:::opencv: /camera/mid/rgb/camera_info
 
-    obj_detector_ai:::common -->  obj_planner_ai:::ai /masked_img
-    obj_detector_cv:::common -->  obj_planner_cv:::opencv /poly
+    obj_detector_ai:::common -->  obj_planner_ai:::ai: /masked_img
+    obj_detector_cv:::common -->  obj_planner_cv:::opencv: /poly
 
     kalman:::common --> hybrid_pp:::common: /odom
     obj_planner:::common --> hybrid_pp:::common: /path
