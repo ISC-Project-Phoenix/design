@@ -49,7 +49,8 @@ stateDiagram-v2
     obj_detector_cv:::common -->  obj_planner_cv:::opencv: /poly
 
     kalman:::common --> hybrid_pp:::common: /odom
-    obj_planner:::common --> hybrid_pp:::common: /path
+    obj_planner_ai:::ai --> hybrid_pp:::common: /path
+    obj_planner_cv:::opencv --> hybrid_pp:::common: /path
     hybrid_pp:::common --> drive_mode_switch: /nav_ack_vel
     webots_ros2_driver:::common --> hybrid_pp:::common: /scan
 ```
