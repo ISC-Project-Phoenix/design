@@ -47,10 +47,10 @@ stateDiagram-v2
 
     %% new stuff
     oak_d_m:::common --> obj_detector_ai:::ai: /camera/mid/rgb
-    oak_d_m:::common --> obj_detector_cv:::ai: /camera/mid/rgb
+    
     oak_d_m:::common --> obj_planner:::common: /camera/mid/rgb/camera_info
     obj_detector_ai:::ai --> obj_planner:::ai: /road/polynomial
-    obj_detector_cv:::opencv --> obj_planner:::opencv: /road/polynomialCV
+    
 
     obj_planner:::common --> hybrid_pp:::common: /path
     hybrid_pp:::common --> drive_mode_switch: /nav_ack_vel
