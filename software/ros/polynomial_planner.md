@@ -3,8 +3,7 @@
 ## Summary
 
 This node plans a path by sampling points into the center of the track. The general idea is to model the bounds of the tracks 
-as polynomials, which are differentiable. The polynomials act as the bounds of the track which let inadverity prevents us from 
-crossing off the track.
+as contours, and treat them as bounds for which we shouldn't cross over. 
 
 A benefit of this approach is that planning is local and very fast, which allows it to be used without localisation.
 
@@ -27,11 +26,6 @@ for the dept of in camera space or on a fixed scaler in ROS space.
 Our backend implementation is considerably simpler. It simply takes these right left sets, and creates
 a path by pairing them and finding midpoints.
 
-1. Validate each the polynomial is not null
-2. Loop through the polynomial using a the edge contours as data points. 
-3. For each point on the contours
-4. We sample point the Y-value point from the center store these points in the Path Array. 
-    a. then these points are projected into real world points. 
-5. Transform the path array into odom
-    1. this is effectively giving the pose a timmestamp and a tf2 frame ID
-       which lets them stay in there real world position compared to the normal
+1. Validate each of the contours is not null
+2. Loop through the left contour
+    1. Shift the point left by 2ish meters.
