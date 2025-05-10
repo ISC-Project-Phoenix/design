@@ -15,9 +15,9 @@ Red = common.launch.py
 
 Black = prod.launch.py
 
-Blue = common.launch.py use_ai:=false
+Blue = common.launch.py     use_ai:=false
 
-Purple = common.launch.py use_ai:=true
+Purple = common.launch.py   use_ai:=true
 
 
 Note that webots_ros2_driver will appear in rqt as /Phoenix
@@ -27,7 +27,7 @@ stateDiagram-v2
     classDef common color: white, fill: red
     classDef data color: white, fill: blue
     classDef prod color: white, fill: black
-    classDef cv color:white,fill:purple
+    classDef ai color:white,fill:purple
     classDef opencv color:white,fill:blue
 
 %% Hardware interfaces
@@ -45,8 +45,8 @@ stateDiagram-v2
     webots_ros2_driver:::common --> obj_detector_cv:::opencv: /camera/mid/rgb/image_color
     webots_ros2_driver:::common --> obj_detector_ai:::opencv: /camera/mid/rgb/camera_info
 
-    obj_detector_ai:::common -->  obj_planner_ai:::ai: /masked_img
-    obj_detector_cv:::common -->  obj_planner_cv:::opencv: /poly
+    obj_detector_ai:::common -->  obj_planner_ai:::ai: /road/polynomial
+    obj_detector_cv:::common -->  obj_planner_cv:::opencv: /road/Contours
 
     kalman:::common --> hybrid_pp:::common: /odom
     obj_planner_ai:::ai --> hybrid_pp:::common: /path
