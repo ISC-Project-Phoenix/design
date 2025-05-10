@@ -25,7 +25,7 @@ stateDiagram-v2
     classDef data color:white,fill:blue
     classDef prod color:white,fill:black
     classDef util color:white,fill:purple
-    classDef ai color:white,fill:purple
+    classDef cv color:white,fill:purple
     classDef opencv color:white,fill:blue
 
     %% Hardware interfaces
@@ -46,10 +46,10 @@ stateDiagram-v2
     
 
     %% new stuff
-    oak_d_m:::common --> obj_detector_ai:::ai: /camera/mid/rgb
+    oak_d_m:::common --> obj_detector_cv:::cv: /camera/mid/rgb/compressed
     
     oak_d_m:::common --> obj_planner:::common: /camera/mid/rgb/camera_info
-    obj_detector_ai:::ai --> obj_planner:::ai: /road/polynomial
+    obj_detector_cv:::cv --> obj_planner:::cv: /road/Contours
     
 
     obj_planner:::common --> hybrid_pp:::common: /path

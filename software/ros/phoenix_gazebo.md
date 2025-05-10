@@ -15,9 +15,9 @@ Red = common.launch.py
 
 Black = prod.launch.py
 
-Blue = data_collect.launch.py
+Blue = common.launch.py use_ai:=false
 
-Purple = common.launch.py
+Purple = common.launch.py use_ai:=true
 
 
 Note that webots_ros2_driver will appear in rqt as /Phoenix
@@ -27,7 +27,7 @@ stateDiagram-v2
     classDef common color: white, fill: red
     classDef data color: white, fill: blue
     classDef prod color: white, fill: black
-    classDef ai color:white,fill:purple
+    classDef cv color:white,fill:purple
     classDef opencv color:white,fill:blue
 
 %% Hardware interfaces
