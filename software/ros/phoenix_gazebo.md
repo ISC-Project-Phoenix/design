@@ -15,9 +15,9 @@ Red = common.launch.py
 
 Black = prod.launch.py
 
-Blue = common.launch.py     use_ai:=false
+Blue = common.launch.py      use_ai:=false
 
-Purple = common.launch.py   use_ai:=true
+Purple = common.launch.py    use_ai:=true
 
 
 Note that webots_ros2_driver will appear in rqt as /Phoenix
