@@ -4,7 +4,14 @@ The Roboteq HDC2450 is a motor controller than can be used to power phnx. This d
 some notes about how to interact with it.
 
 ## Connection
+TODO: explain how we do it
 
+NEW:
+- **USB (CDC Serial)**: Appears as a virtual COM port for interactive command and configuration.  
+- **CAN Bus**: Use CAN_P/CAN_N pins; typical bus speed is 1 Mb/s (or project-specific rate).  
+- **Ethernet (TCP/IP)**: Connect via RJ45 for remote command, configuration, and telemetry.  
+
+OLD:
 The roboteq can be connected by either RS-232 or USB. In either case, UART is the underlying protocol.
 Once this is done, an interactive terminal can be used to send commands, queries, or change settings.
 
