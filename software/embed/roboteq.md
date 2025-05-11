@@ -3,6 +3,15 @@
 The Roboteq HDC2450 is a motor controller than can be used to power phnx. This document will go over
 some notes about how to interact with it.
 
+## Hardware Specifications
+
+- **Continuous current**: 240 A  
+- **Peak current**: 360 A (30 s)  
+- **Voltage range**: up to 60 V  
+- **Inputs**: Hall sensors, quadrature encoder  
+- **Communication**: USB (CDC serial), CAN bus, Ethernet (TCP/IP)  
+- **Safety**: STO PLe, Cat 3, SIL 3  
+
 ## Connection
 TODO: explain how we do it
 
@@ -50,3 +59,5 @@ used on phnx. By default, it defaults to open loop control.
 - `^ECHOF`: Turns off echo
 - `!G {channel} {0-1000}`: Powers a motor channel to some power. In open loop mode, this is just PWM duty cycle.
 - `?V {num}`: Gets the voltage of 1 the controller or 2 the battery.
+
+Refer to the official RoboG4 manual for the full command set and programming examples.
