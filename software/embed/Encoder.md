@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Encoder ECU reads quadrature encoder signals from a Taiss incremental rotary encoder and publishes wheel velocity data over the CAN bus. This data is consumed by the `phnx_io_ros` node and republished on the `/odom_can` topic for the speed-control loop citeturn2file0.
+The Encoder ECU reads quadrature encoder signals from a Taiss incremental rotary encoder and publishes wheel velocity data over the CAN bus. This data is consumed by the `phnx_io_ros` node and republished on the `/odom_can` topic for the speed-control loop.
 
 ## Hardware Specifications
 
@@ -16,7 +16,7 @@ The Encoder ECU reads quadrature encoder signals from a Taiss incremental rotary
 
 * `ENCODER_TEETH = 600` P/R
 * `WHEEL_CIRC_METER` = wheel circumference in meters (project-specific)
-* `ENCODER_SAMPLE_PERIOD_US = 10 * 5000 = 50000` µs (50 ms between samples)
+* `ENCODER_SAMPLE_PERIOD_US = 10 * 5000 = 50000` (50 ms between samples)
 
 ## Software Architecture
 
@@ -30,7 +30,7 @@ The Encoder ECU reads quadrature encoder signals from a Taiss incremental rotary
 
 ### Periodic Sampling (Timer)
 
-A hardware timer fires every `ENCODER_SAMPLE_PERIOD_US` µs, invoking `timer_irq()`:
+A hardware timer fires every `ENCODER_SAMPLE_PERIOD_US`, invoking `timer_irq()`:
 
 1. Compute `delta_ticks = ticks - last_ticks` (signed 32‑bit).
 2. Store `mag_delta = abs(delta_ticks)` in a `uint16_t`.

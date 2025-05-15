@@ -5,33 +5,17 @@ some notes about how to interact with it.
 
 ## Hardware Specifications
 
-- **Continuous current**: 240 A  
-- **Peak current**: 360 A (30 s)  
-- **Voltage range**: up to 60 V  
-- **Inputs**: Hall sensors, quadrature encoder  
+- **Continuous current**: 100 A  
+- **Peak current**: 300 A (60 s)  
+- **Voltage range**: up to 48 V  
+- **Inputs**: enable pin
 - **Communication**: USB (CDC serial), CAN bus, Ethernet (TCP/IP)  
 - **Safety**: STO PLe, Cat 3, SIL 3  
 
 ## Connection
-TODO: explain how we do it
 
-NEW:
-- **USB (CDC Serial)**: Appears as a virtual COM port for interactive command and configuration.  
-- **CAN Bus**: Use CAN_P/CAN_N pins; typical bus speed is 1 Mb/s (or project-specific rate).  
-- **Ethernet (TCP/IP)**: Connect via RJ45 for remote command, configuration, and telemetry.  
-
-OLD:
-The roboteq can be connected by either RS-232 or USB. In either case, UART is the underlying protocol.
+The roboteq is connected by USB.
 Once this is done, an interactive terminal can be used to send commands, queries, or change settings.
-
-USB is as simple as you would image, mounting as a serial device.
-
-For RS232, connect to pins 2 and 3 on the big connector as RX and TX out respectively (we should
-have a harness for this). Ground is pin 5. This is true RS232, so +-10V. This means you will need
-to use an RS232 to TTL or USB adapter. ISC has a few, and they are cheap. Once connected, the TTL will
-work the same as the USB protocol.
-
-These run @ 115,200 1N1
 
 ## Commands
 
