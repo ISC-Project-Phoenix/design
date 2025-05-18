@@ -3,19 +3,19 @@
 The Roboteq HDC2450 is a motor controller than can be used to power phnx. This document will go over
 some notes about how to interact with it.
 
+## Hardware Specifications
+
+- **Continuous current**: 100 A  
+- **Peak current**: 300 A (60 s)  
+- **Voltage range**: up to 48 V  
+- **Inputs**: enable pin
+- **Communication**: USB (CDC serial), CAN bus, Ethernet (TCP/IP)  
+- **Safety**: STO PLe, Cat 3, SIL 3  
+
 ## Connection
 
-The roboteq can be connected by either RS-232 or USB. In either case, UART is the underlying protocol.
+The roboteq is connected by USB.
 Once this is done, an interactive terminal can be used to send commands, queries, or change settings.
-
-USB is as simple as you would image, mounting as a serial device.
-
-For RS232, connect to pins 2 and 3 on the big connector as RX and TX out respectively (we should
-have a harness for this). Ground is pin 5. This is true RS232, so +-10V. This means you will need
-to use an RS232 to TTL or USB adapter. ISC has a few, and they are cheap. Once connected, the TTL will
-work the same as the USB protocol.
-
-These run @ 115,200 1N1
 
 ## Commands
 
@@ -43,3 +43,5 @@ used on phnx. By default, it defaults to open loop control.
 - `^ECHOF`: Turns off echo
 - `!G {channel} {0-1000}`: Powers a motor channel to some power. In open loop mode, this is just PWM duty cycle.
 - `?V {num}`: Gets the voltage of 1 the controller or 2 the battery.
+
+Refer to the official RoboG4 manual for the full command set and programming examples.

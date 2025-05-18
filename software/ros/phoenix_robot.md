@@ -15,9 +15,9 @@ Red = common.launch.py
 
 Black = prod.launch.py
 
-Purple = utilibot.launch.py
-
 Blue = common.launch.py
+
+Purple = common.launch.py
 
 ```mermaid
 stateDiagram-v2
@@ -25,6 +25,8 @@ stateDiagram-v2
     classDef data color:white,fill:blue
     classDef prod color:white,fill:black
     classDef util color:white,fill:purple
+    classDef cv color:white,fill:purple
+    classDef opencv color:white,fill:blue
 
     %% Hardware interfaces
     Can --> phnx_io_ros:::common: Encoder, Estop state
@@ -32,7 +34,7 @@ stateDiagram-v2
     
     %% command controllers
     drive_mode_switch:::common --> phnx_io_ros:::common: /robot/ack_vel
-    logi_g29:::util --> drive_mode_switch:::common: /ack_vel
+    
     
     %% state control
     phnx_io_ros:::common --> robot_state_controller:::common: /robot/set_state
@@ -40,23 +42,15 @@ stateDiagram-v2
 
     %% Localisation
     phnx_io_ros:::common --> kalman:::common: /odom_can
-    oak_d_l:::common --> kalman:::common: /camera/left/imu
-    oak_d_r:::common --> kalman:::common: /camera/right/imu
+    oak_d_m:::common --> kalman:::common: /camera/mid/imu
+    
 
     %% new stuff
-    oak_d_l:::common --> obj_detector1:::common: /camera/left/depth
-    oak_d_l:::common --> obj_detector1:::common: /camera/left/rgb
-    oak_d_l:::common --> obj_detector1:::common: /camera/left/rgb/camera_info
-    obj_detector1:::common --> detection_cat:::common: /object_poses/left
+    oak_d_m:::common --> obj_detector_cv:::cv: /camera/mid/rgb/compressed
     
-    oak_d_r:::common --> obj_detector2:::common: /camera/right/depth
-    oak_d_r:::common --> obj_detector2:::common: /camera/right/rgb
-    oak_d_r:::common --> obj_detector2:::common: /camera/right/rgb/camera_info
-    obj_detector2:::common --> detection_cat:::common: /object_poses/right
+    oak_d_m:::common --> obj_planner:::common: /camera/mid/rgb/camera_info
+    obj_detector_cv:::cv --> obj_planner:::cv: /road/Contours
     
-    detection_cat:::common --> obj_tracker:::common: /object_poses
-
-    obj_tracker:::common --> obj_planner:::common: /tracks
 
     obj_planner:::common --> hybrid_pp:::common: /path
     hybrid_pp:::common --> drive_mode_switch: /nav_ack_vel
