@@ -2,17 +2,12 @@
 
 ## Summary
 
-Path tracking implementation of the pure pursuit algorithm used to command velocity and ackerman angle to navigate to
-calculated points along a selected path. In addition to traditional pure pursuit, we also add an obstacle avoidance
-component. This works by repelling the paths away from obstacles, causing the kart to swerve around them. This is reactive,
-and thus relies on the higher level planner to handle replanning if the kart is thrown off course by this avoidance. 
+Path tracking implementation of the pure pursuit algorithm used to command velocity and Ackerman angle to navigate to calculated points along a selected path. 
 
 ### Subscribes
 
 - `/odom`: Odometry, this is used to get the linear velocity to determine a look ahead distance.
-- `/path`: This is the path that is being supplied from the obj_planner node, should be a list of midpoints between
-  respective left and right cones.
-- `/scan` - LiDAR scans to avoid
+- `/path`: This is the path that is being supplied from the polynomial planner node, should be a list points offset to the middle of the lane from the left side of the track
 
 ### Publishes
 
@@ -36,7 +31,7 @@ and thus relies on the higher level planner to handle replanning if the kart is 
 
 ### Algorithm
 
-Currently we take in the path from obj_planner and create a spline from the list of points. Then based off our current
+Currently we take in the path from polynomial planner and create a spline from the list of points. Then based off our current
 speed we calculate the look ahead distance which is used to check the point of intersection infront of us along the
 spline. That point of intersection then becomes our target point to which we calculate our steering angle and command
 velocity. Upon reciving the path message, we manipulate each point to move around laser scans creating a curve around
