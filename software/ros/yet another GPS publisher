@@ -1,0 +1,61 @@
+**Yet Another GPS publisher**  
+The Autonomy loop
+
+This node primarily stores its logic in the yet\_another\_gps\_publisher\_node.cpp which subscribes to \`/odometry/gps\` and gets the current position from the vector nav. These updates provide us with the kart's current location so we can generate a path of points to follow from the waypoints. The algorithm is not complex but is designed to run in a continuous loop regardless of conditions on the ground. In contrast to more reactive systems this system is designed to be run at various types of race course without requiring a full retaining of the vision systems ahead of time. In addition it can run in more adverse conditions than traditional computer vision systems. 
+
+Publishes
+
+- “/path”: \<nav\_msgs::msg::Path\> This is the path that hybrid pure pursuit and controls follow\!  
+
+
+Subscribes
+
+- sensor\_msgs::msg::NavSatFix “/phoenix/navsat”  
+  This is the raw GPS callback designed to update the karts position and clean   
+- nav\_msgs::msg::Odometry	       “/odometery/gps”
+
+
+Parameters
+
+- Max\_gps\_variance  
+- Do\_gps\_variance\_check  
+- Min\_spline\_length  
+- Arrival\_threshold  
+- waypoint\_file\_path
+
+Algorithm  
+The publisher loads waypoints into a doubly linked list stored in a formatted plaintext. The read will ignore any mal formed points in the system. 
+
+1. We check to see which spline generation method they prefer   
+2. Transform into UTM points. 
+
+To verify position our position in the world we have a raw GPS callback to evaluate the 
+
+- The status of the GPS system.   
+- The variance in the system
+
+If either are out of line with expectations then we do not use them\! 
+
+The primary trigger for this system is the global\_ekf\_callback(). The reason for this is so because we *dynamically* need the position of the kart relative to the waypoints, not the other way around.   
+The waypoints are translated into the map frame every callback accounts for variance over time in the frame, as if it drifts or was inaccurate this wouldn't be reflected in the system at all. 
+
+Once the waypoints are translated into the map frame we walk along them generating their spline with their spline function. Once their collective length expects the minimum required length for a spline (as defined by Min\_spline\_length in meters) these cartesian points are placed in the high fuency local odom frame and given to the robot to continue driving in. 
+
+Since the robot’s splines operate at around 10 htz there is not a need to worry about drift in odom since it will be replaced quickly. 
+
+**Waypoint class**
+
+The waypoint class is stored in the gps\_waypoint.hpp and contains basic information about each waypoint, principally their 
+
+- double longitude\_ \= 0.0;  
+- double latitude\_ \= 0.0;  
+- std::string method\_ \= "linear";  
+- double radius\_ \= 0.0;
+
+Additionally we can store their pose in various other frames if necessary, however we just use their UTM pose. 
+
+- geometry\_msgs::msg::PoseStamped utm\_pose\_;  
+- geometry\_msgs::msg::Pose odom\_pose;  
+- geometry\_msgs::msg::Pose map\_pose\_;
+
+The spline methods are stored as a factory pattern which is being used to allow multiple unique functions to be used in the same manner. This allowed the team to experiment with various other ways (outside of linear) to connect various GPS points. These are defined in the spline methods.hpp and implemented in the spline mthonds.cpp
